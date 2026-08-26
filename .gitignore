@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.env
+
+# Test / tooling
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Produced datasources (do not commit harvested network data)
+network-datasource/
+*.datasource/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.swp

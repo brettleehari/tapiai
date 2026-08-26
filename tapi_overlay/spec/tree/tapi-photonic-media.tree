@@ -1,0 +1,1421 @@
+module: tapi-photonic-media
+
+  augment /tapi-common:context/tapi-topology:topology-context/tapi-topology:topology/tapi-topology:node/tapi-topology:owned-node-edge-point:
+    +--ro photonic-media-node-edge-point-spec
+       +--ro spectrum-capability-pac
+       |  +--ro supportable-spectrum* [upper-frequency lower-frequency]
+       |  |  +--ro upper-frequency         uint64
+       |  |  +--ro lower-frequency         uint64
+       |  |  +--ro frequency-constraint
+       |  |     +--ro adjustment-granularity?   adjustment-granularity
+       |  |     +--ro grid-type?                grid-type
+       |  +--ro available-spectrum* [upper-frequency lower-frequency]
+       |  |  +--ro upper-frequency         uint64
+       |  |  +--ro lower-frequency         uint64
+       |  |  +--ro frequency-constraint
+       |  |     +--ro adjustment-granularity?   adjustment-granularity
+       |  |     +--ro grid-type?                grid-type
+       |  +--ro occupied-spectrum* [upper-frequency lower-frequency]
+       |     +--ro upper-frequency         uint64
+       |     +--ro lower-frequency         uint64
+       |     +--ro frequency-constraint
+       |        +--ro adjustment-granularity?   adjustment-granularity
+       |        +--ro grid-type?                grid-type
+       +--ro power-management-capability-pac* []
+       |  +--ro spectrum
+       |  |  +--ro upper-frequency?   uint64
+       |  |  +--ro lower-frequency?   uint64
+       |  +--ro supportable-max-output-power
+       |  |  +--ro total-power
+       |  |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |  |     +--ro pm-parameter-value?        decimal64
+       |  |  |     +--ro pm-parameter-unit?         string
+       |  |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  |  +--ro power-spectral-density?   decimal64
+       |  +--ro supportable-min-output-power
+       |  |  +--ro total-power
+       |  |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |  |     +--ro pm-parameter-value?        decimal64
+       |  |  |     +--ro pm-parameter-unit?         string
+       |  |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  |  +--ro power-spectral-density?   decimal64
+       |  +--ro tolerable-max-input-power
+       |  |  +--ro total-power
+       |  |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |  |     +--ro pm-parameter-value?        decimal64
+       |  |  |     +--ro pm-parameter-unit?         string
+       |  |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  |  +--ro power-spectral-density?   decimal64
+       |  +--ro tolerable-min-input-power
+       |     +--ro total-power
+       |     |  +--ro metric-values* [pm-parameter-value-type]
+       |     |     +--ro pm-parameter-value?        decimal64
+       |     |     +--ro pm-parameter-unit?         string
+       |     |     +--ro pm-parameter-value-type    metric-value-type
+       |     +--ro power-spectral-density?   decimal64
+       +--ro total-power-threshold-pac* []
+       |  +--ro spectrum
+       |  |  +--ro upper-frequency?   uint64
+       |  |  +--ro lower-frequency?   uint64
+       |  +--ro total-power-upper-warn-threshold-default?   decimal64
+       |  +--ro total-power-upper-warn-threshold-min?       decimal64
+       |  +--ro total-power-upper-warn-threshold-max?       decimal64
+       |  +--ro total-power-lower-warn-threshold-default?   decimal64
+       |  +--ro total-power-lower-warn-threshold-min?       decimal64
+       |  +--ro total-power-lower-warn-threshold-max?       decimal64
+       +--ro transceiver-capability-occurrence* [local-id]
+          +--ro frequency-range
+          |  +--ro upper-frequency?   uint64
+          |  +--ro lower-frequency?   uint64
+          +--ro transceiver-supported-mode* [profile-uuid]
+          |  +--ro profile-uuid    -> /tapi-common:context/profile/uuid
+          +--ro local-id                      string
+          +--ro name* [value-name]
+             +--ro value-name    string
+             +--ro value?        string
+  augment /tapi-common:context/tapi-common:service-interface-point:
+    +--ro photonic-media-service-interface-point-spec
+       +--ro spectrum-capability-pac
+       |  +--ro supportable-spectrum* [upper-frequency lower-frequency]
+       |  |  +--ro upper-frequency         uint64
+       |  |  +--ro lower-frequency         uint64
+       |  |  +--ro frequency-constraint
+       |  |     +--ro adjustment-granularity?   adjustment-granularity
+       |  |     +--ro grid-type?                grid-type
+       |  +--ro available-spectrum* [upper-frequency lower-frequency]
+       |  |  +--ro upper-frequency         uint64
+       |  |  +--ro lower-frequency         uint64
+       |  |  +--ro frequency-constraint
+       |  |     +--ro adjustment-granularity?   adjustment-granularity
+       |  |     +--ro grid-type?                grid-type
+       |  +--ro occupied-spectrum* [upper-frequency lower-frequency]
+       |     +--ro upper-frequency         uint64
+       |     +--ro lower-frequency         uint64
+       |     +--ro frequency-constraint
+       |        +--ro adjustment-granularity?   adjustment-granularity
+       |        +--ro grid-type?                grid-type
+       +--ro power-management-capability-pac* []
+       |  +--ro spectrum
+       |  |  +--ro upper-frequency?   uint64
+       |  |  +--ro lower-frequency?   uint64
+       |  +--ro supportable-max-output-power
+       |  |  +--ro total-power
+       |  |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |  |     +--ro pm-parameter-value?        decimal64
+       |  |  |     +--ro pm-parameter-unit?         string
+       |  |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  |  +--ro power-spectral-density?   decimal64
+       |  +--ro supportable-min-output-power
+       |  |  +--ro total-power
+       |  |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |  |     +--ro pm-parameter-value?        decimal64
+       |  |  |     +--ro pm-parameter-unit?         string
+       |  |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  |  +--ro power-spectral-density?   decimal64
+       |  +--ro tolerable-max-input-power
+       |  |  +--ro total-power
+       |  |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |  |     +--ro pm-parameter-value?        decimal64
+       |  |  |     +--ro pm-parameter-unit?         string
+       |  |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  |  +--ro power-spectral-density?   decimal64
+       |  +--ro tolerable-min-input-power
+       |     +--ro total-power
+       |     |  +--ro metric-values* [pm-parameter-value-type]
+       |     |     +--ro pm-parameter-value?        decimal64
+       |     |     +--ro pm-parameter-unit?         string
+       |     |     +--ro pm-parameter-value-type    metric-value-type
+       |     +--ro power-spectral-density?   decimal64
+       +--ro total-power-threshold-pac* []
+          +--ro spectrum
+          |  +--ro upper-frequency?   uint64
+          |  +--ro lower-frequency?   uint64
+          +--ro total-power-upper-warn-threshold-default?   decimal64
+          +--ro total-power-upper-warn-threshold-min?       decimal64
+          +--ro total-power-upper-warn-threshold-max?       decimal64
+          +--ro total-power-lower-warn-threshold-default?   decimal64
+          +--ro total-power-lower-warn-threshold-min?       decimal64
+          +--ro total-power-lower-warn-threshold-max?       decimal64
+  augment /tapi-common:context/tapi-topology:topology-context/tapi-topology:topology/tapi-topology:node/tapi-topology:owned-node-edge-point/tapi-connectivity:cep-list/tapi-connectivity:connection-end-point:
+    +--ro otsi-mc-connection-end-point-spec
+       +--ro otsi-termination-pac
+       |  +--ro selected-central-frequency?   uint64
+       |  +--ro selected-spectrum
+       |  |  +--ro upper-frequency?   uint64
+       |  |  +--ro lower-frequency?   uint64
+       |  +--ro application-identifier
+       |  |  +--ro standard-application-code?    standard-application-code-rec
+       |  |  +--ro proprietary-application-id?   string
+       |  +--ro modulation
+       |  |  +--ro standard-modulation-technique?      mt
+       |  |  +--ro proprietary-modulation-technique?   string
+       |  +--ro laser-properties
+       |  |  +--ro laser-status?             laser-control-status-type
+       |  |  +--ro laser-application-type?   laser-type
+       |  |  +--ro laser-bias-current?       decimal64
+       |  |  +--ro laser-temperature?        decimal64
+       |  +--ro otsi-monitoring-pac
+       |     +--ro polarization-mode-dispersion
+       |     |  +--ro metric-values* [pm-parameter-value-type]
+       |     |     +--ro pm-parameter-value?        decimal64
+       |     |     +--ro pm-parameter-unit?         string
+       |     |     +--ro pm-parameter-value-type    metric-value-type
+       |     +--ro chromatic-dispersion
+       |     |  +--ro metric-values* [pm-parameter-value-type]
+       |     |     +--ro pm-parameter-value?        decimal64
+       |     |     +--ro pm-parameter-unit?         string
+       |     |     +--ro pm-parameter-value-type    metric-value-type
+       |     +--ro diff-group-delay
+       |     |  +--ro metric-values* [pm-parameter-value-type]
+       |     |     +--ro pm-parameter-value?        decimal64
+       |     |     +--ro pm-parameter-unit?         string
+       |     |     +--ro pm-parameter-value-type    metric-value-type
+       |     +--ro frequency-offset
+       |        +--ro metric-values* [pm-parameter-value-type]
+       |           +--ro pm-parameter-value?        decimal64
+       |           +--ro pm-parameter-unit?         string
+       |           +--ro pm-parameter-value-type    metric-value-type
+       +--ro spectrum-pac
+       |  +--ro occupied-spectrum
+       |  |  +--ro upper-frequency?   uint64
+       |  |  +--ro lower-frequency?   uint64
+       |  +--ro local-id?            string
+       |  +--ro name* [value-name]
+       |     +--ro value-name    string
+       |     +--ro value?        string
+       +--ro flexi-grid-pac
+       |  +--ro n?                              int64
+       |  +--ro m?                              uint64
+       |  +--ro flexi-ch-spc-type?              flexi-channel-spacing
+       |  +--ro flexi-slot-width-granularity?   flexi-slot-width-granularity
+       |  +--ro local-id?                       string
+       |  +--ro name* [value-name]
+       |     +--ro value-name    string
+       |     +--ro value?        string
+       +--ro power-measurement-pac
+          +--ro measured-input-power
+          |  +--ro total-power
+          |  |  +--ro metric-values* [pm-parameter-value-type]
+          |  |     +--ro pm-parameter-value?        decimal64
+          |  |     +--ro pm-parameter-unit?         string
+          |  |     +--ro pm-parameter-value-type    metric-value-type
+          |  +--ro power-spectral-density?   decimal64
+          +--ro measured-output-power
+             +--ro total-power
+             |  +--ro metric-values* [pm-parameter-value-type]
+             |     +--ro pm-parameter-value?        decimal64
+             |     +--ro pm-parameter-unit?         string
+             |     +--ro pm-parameter-value-type    metric-value-type
+             +--ro power-spectral-density?   decimal64
+  augment /tapi-common:context/tapi-connectivity:connectivity-context/tapi-connectivity:connectivity-service/tapi-connectivity:end-point/tapi-connectivity:layer-protocol-constraint:
+    +--rw mcg-connectivity-service-end-point-spec
+       +--rw number-of-mc?               uint64
+       +--rw mc-spectrum-config-pac* [local-id]
+       |  +--rw spectrum
+       |  |  +--rw upper-frequency?   uint64
+       |  |  +--rw lower-frequency?   uint64
+       |  +--rw edge-frequency-constraint
+       |  |  +--rw adjustment-granularity?   adjustment-granularity
+       |  |  +--rw grid-type?                grid-type
+       |  +--rw power-management-config-pac
+       |  |  +--rw max-output-power
+       |  |  |  +--rw total-power
+       |  |  |  |  +--rw metric-values* [pm-parameter-value-type]
+       |  |  |  |     +--rw pm-parameter-value?        decimal64
+       |  |  |  |     +--rw pm-parameter-unit?         string
+       |  |  |  |     +--rw pm-parameter-value-type    metric-value-type
+       |  |  |  +--ro power-spectral-density?   decimal64
+       |  |  +--rw min-output-power
+       |  |  |  +--rw total-power
+       |  |  |  |  +--rw metric-values* [pm-parameter-value-type]
+       |  |  |  |     +--rw pm-parameter-value?        decimal64
+       |  |  |  |     +--rw pm-parameter-unit?         string
+       |  |  |  |     +--rw pm-parameter-value-type    metric-value-type
+       |  |  |  +--ro power-spectral-density?   decimal64
+       |  |  +--rw max-input-power
+       |  |  |  +--rw total-power
+       |  |  |  |  +--rw metric-values* [pm-parameter-value-type]
+       |  |  |  |     +--rw pm-parameter-value?        decimal64
+       |  |  |  |     +--rw pm-parameter-unit?         string
+       |  |  |  |     +--rw pm-parameter-value-type    metric-value-type
+       |  |  |  +--ro power-spectral-density?   decimal64
+       |  |  +--rw min-input-power
+       |  |     +--rw total-power
+       |  |     |  +--rw metric-values* [pm-parameter-value-type]
+       |  |     |     +--rw pm-parameter-value?        decimal64
+       |  |     |     +--rw pm-parameter-unit?         string
+       |  |     |     +--rw pm-parameter-value-type    metric-value-type
+       |  |     +--ro power-spectral-density?   decimal64
+       |  +--rw local-id                       string
+       |  +--rw name* [value-name]
+       |     +--rw value-name    string
+       |     +--rw value?        string
+       +--rw mc-bandwidth-config-pac* [local-id]
+       |  +--rw spectrum-bandwidth?            uint64
+       |  +--rw edge-frequency-constraint
+       |  |  +--rw adjustment-granularity?   adjustment-granularity
+       |  |  +--rw grid-type?                grid-type
+       |  +--rw power-management-config-pac
+       |  |  +--rw max-output-power
+       |  |  |  +--rw total-power
+       |  |  |  |  +--rw metric-values* [pm-parameter-value-type]
+       |  |  |  |     +--rw pm-parameter-value?        decimal64
+       |  |  |  |     +--rw pm-parameter-unit?         string
+       |  |  |  |     +--rw pm-parameter-value-type    metric-value-type
+       |  |  |  +--ro power-spectral-density?   decimal64
+       |  |  +--rw min-output-power
+       |  |  |  +--rw total-power
+       |  |  |  |  +--rw metric-values* [pm-parameter-value-type]
+       |  |  |  |     +--rw pm-parameter-value?        decimal64
+       |  |  |  |     +--rw pm-parameter-unit?         string
+       |  |  |  |     +--rw pm-parameter-value-type    metric-value-type
+       |  |  |  +--ro power-spectral-density?   decimal64
+       |  |  +--rw max-input-power
+       |  |  |  +--rw total-power
+       |  |  |  |  +--rw metric-values* [pm-parameter-value-type]
+       |  |  |  |     +--rw pm-parameter-value?        decimal64
+       |  |  |  |     +--rw pm-parameter-unit?         string
+       |  |  |  |     +--rw pm-parameter-value-type    metric-value-type
+       |  |  |  +--ro power-spectral-density?   decimal64
+       |  |  +--rw min-input-power
+       |  |     +--rw total-power
+       |  |     |  +--rw metric-values* [pm-parameter-value-type]
+       |  |     |     +--rw pm-parameter-value?        decimal64
+       |  |     |     +--rw pm-parameter-unit?         string
+       |  |     |     +--rw pm-parameter-value-type    metric-value-type
+       |  |     +--ro power-spectral-density?   decimal64
+       |  +--rw local-id                       string
+       |  +--rw name* [value-name]
+       |     +--rw value-name    string
+       |     +--rw value?        string
+       +--rw mc-flexi-grid-config-pac* [local-id]
+          +--rw flexi-grid-config-pac
+          |  +--rw n?                              int64
+          |  +--rw m?                              uint64
+          |  +--rw flexi-ch-spc-type?              flexi-channel-spacing
+          |  +--rw flexi-slot-width-granularity?   flexi-slot-width-granularity
+          +--rw power-management-config-pac
+          |  +--rw max-output-power
+          |  |  +--rw total-power
+          |  |  |  +--rw metric-values* [pm-parameter-value-type]
+          |  |  |     +--rw pm-parameter-value?        decimal64
+          |  |  |     +--rw pm-parameter-unit?         string
+          |  |  |     +--rw pm-parameter-value-type    metric-value-type
+          |  |  +--ro power-spectral-density?   decimal64
+          |  +--rw min-output-power
+          |  |  +--rw total-power
+          |  |  |  +--rw metric-values* [pm-parameter-value-type]
+          |  |  |     +--rw pm-parameter-value?        decimal64
+          |  |  |     +--rw pm-parameter-unit?         string
+          |  |  |     +--rw pm-parameter-value-type    metric-value-type
+          |  |  +--ro power-spectral-density?   decimal64
+          |  +--rw max-input-power
+          |  |  +--rw total-power
+          |  |  |  +--rw metric-values* [pm-parameter-value-type]
+          |  |  |     +--rw pm-parameter-value?        decimal64
+          |  |  |     +--rw pm-parameter-unit?         string
+          |  |  |     +--rw pm-parameter-value-type    metric-value-type
+          |  |  +--ro power-spectral-density?   decimal64
+          |  +--rw min-input-power
+          |     +--rw total-power
+          |     |  +--rw metric-values* [pm-parameter-value-type]
+          |     |     +--rw pm-parameter-value?        decimal64
+          |     |     +--rw pm-parameter-unit?         string
+          |     |     +--rw pm-parameter-value-type    metric-value-type
+          |     +--ro power-spectral-density?   decimal64
+          +--rw local-id                       string
+          +--rw name* [value-name]
+             +--rw value-name    string
+             +--rw value?        string
+  augment /tapi-common:context/tapi-connectivity:connectivity-context/tapi-connectivity:connectivity-service/tapi-connectivity:end-point/tapi-connectivity:layer-protocol-constraint:
+    +--rw otsia-connectivity-service-end-point-spec
+       +--rw otsi-config* [local-id]
+       |  +--rw central-frequency?             uint64
+       |  +--rw channel-output-power?          decimal64
+       |  +--rw application-identifier
+       |  |  +--rw standard-application-code?    standard-application-code-rec
+       |  |  +--rw proprietary-application-id?   string
+       |  +--rw modulation
+       |  |  +--rw standard-modulation-technique?      mt
+       |  |  +--rw proprietary-modulation-technique?   string
+       |  +--rw laser-control?                 laser-control-type
+       |  +--rw otsi-threshold-power-config
+       |  |  +--rw total-power-warn-threshold-upper?   decimal64
+       |  |  +--rw total-power-warn-threshold-lower?   decimal64
+       |  +--rw power-management-config-pac
+       |  |  +--rw max-output-power
+       |  |  |  +--rw total-power
+       |  |  |  |  +--rw metric-values* [pm-parameter-value-type]
+       |  |  |  |     +--rw pm-parameter-value?        decimal64
+       |  |  |  |     +--rw pm-parameter-unit?         string
+       |  |  |  |     +--rw pm-parameter-value-type    metric-value-type
+       |  |  |  +--ro power-spectral-density?   decimal64
+       |  |  +--rw min-output-power
+       |  |  |  +--rw total-power
+       |  |  |  |  +--rw metric-values* [pm-parameter-value-type]
+       |  |  |  |     +--rw pm-parameter-value?        decimal64
+       |  |  |  |     +--rw pm-parameter-unit?         string
+       |  |  |  |     +--rw pm-parameter-value-type    metric-value-type
+       |  |  |  +--ro power-spectral-density?   decimal64
+       |  |  +--rw max-input-power
+       |  |  |  +--rw total-power
+       |  |  |  |  +--rw metric-values* [pm-parameter-value-type]
+       |  |  |  |     +--rw pm-parameter-value?        decimal64
+       |  |  |  |     +--rw pm-parameter-unit?         string
+       |  |  |  |     +--rw pm-parameter-value-type    metric-value-type
+       |  |  |  +--ro power-spectral-density?   decimal64
+       |  |  +--rw min-input-power
+       |  |     +--rw total-power
+       |  |     |  +--rw metric-values* [pm-parameter-value-type]
+       |  |     |     +--rw pm-parameter-value?        decimal64
+       |  |     |     +--rw pm-parameter-unit?         string
+       |  |     |     +--rw pm-parameter-value-type    metric-value-type
+       |  |     +--ro power-spectral-density?   decimal64
+       |  +--rw local-id                       string
+       |  +--rw name* [value-name]
+       |     +--rw value-name    string
+       |     +--rw value?        string
+       +--rw number-of-otsi?                     uint64
+       +--rw total-power-warn-threshold-upper?   decimal64
+       +--rw total-power-warn-threshold-lower?   decimal64
+  augment /tapi-common:context/tapi-common:profile:
+    +--ro fiber-profile
+       +--ro type-variety?     string
+       +--ro loss-coef?        decimal64
+       +--ro fiber-pmd?        decimal64
+       +--ro effective-area?   decimal64
+  augment /tapi-common:context/tapi-common:profile:
+    +--ro transceiver-profile
+       +--ro transceiver-standard-profile
+       |  +--ro application-code-rec?            standard-application-code-rec
+       |  +--ro application-code?                string
+       |  +--ro common-transceiver-parameters
+       |     +--ro line-coding-bitrate?       line-coding
+       |     +--ro central-frequency-range
+       |     |  +--ro upper-frequency?   uint64
+       |     |  +--ro lower-frequency?   uint64
+       |     +--ro tunability?                uint64
+       |     +--ro tx-channel-power-min?      decimal64
+       |     +--ro tx-channel-power-max?      decimal64
+       |     +--ro rx-channel-power-min?      decimal64
+       |     +--ro rx-channel-power-max?      decimal64
+       |     +--ro rx-total-power-max?        decimal64
+       |     +--ro local-id?                  string
+       |     +--ro name* [value-name]
+       |        +--ro value-name    string
+       |        +--ro value?        string
+       +--ro transceiver-organizational-profile
+       |  +--ro operational-mode?                  string
+       |  +--ro organization-identifier?           string
+       |  +--ro common-transceiver-parameters
+       |  |  +--ro line-coding-bitrate?       line-coding
+       |  |  +--ro central-frequency-range
+       |  |  |  +--ro upper-frequency?   uint64
+       |  |  |  +--ro lower-frequency?   uint64
+       |  |  +--ro tunability?                uint64
+       |  |  +--ro tx-channel-power-min?      decimal64
+       |  |  +--ro tx-channel-power-max?      decimal64
+       |  |  +--ro rx-channel-power-min?      decimal64
+       |  |  +--ro rx-channel-power-max?      decimal64
+       |  |  +--ro rx-total-power-max?        decimal64
+       |  |  +--ro local-id?                  string
+       |  |  +--ro name* [value-name]
+       |  |     +--ro value-name    string
+       |  |     +--ro value?        string
+       |  +--ro external-transceiver-parameters
+       |     +--ro fec-type?          fec-type
+       |     +--ro baud-rate?         uint64
+       |     +--ro modulation-type
+       |        +--ro standard-modulation-technique?      mt
+       |        +--ro proprietary-modulation-technique?   string
+       +--ro transceiver-explicit-profile
+          +--ro common-transceiver-parameters
+          |  +--ro line-coding-bitrate?       line-coding
+          |  +--ro central-frequency-range
+          |  |  +--ro upper-frequency?   uint64
+          |  |  +--ro lower-frequency?   uint64
+          |  +--ro tunability?                uint64
+          |  +--ro tx-channel-power-min?      decimal64
+          |  +--ro tx-channel-power-max?      decimal64
+          |  +--ro rx-channel-power-min?      decimal64
+          |  +--ro rx-channel-power-max?      decimal64
+          |  +--ro rx-total-power-max?        decimal64
+          |  +--ro local-id?                  string
+          |  +--ro name* [value-name]
+          |     +--ro value-name    string
+          |     +--ro value?        string
+          +--ro common-explicit
+          |  +--ro line-coding-bitrate?                    line-coding
+          |  +--ro bit-rate?                               decimal64
+          |  +--ro max-diff-group-delay?                   uint64
+          |  +--ro max-chromatic-dispersion?               decimal64
+          |  +--ro chromatic-dispersion-penalty* []
+          |  |  +--ro index?                  uint64
+          |  |  +--ro chromatic-dispersion?   decimal64
+          |  |  +--ro penalty?                decimal64
+          |  +--ro max-polarization-mode-dispersion?       decimal64
+          |  +--ro polarization-mode-dispersion-penalty* []
+          |  |  +--ro index?                          uint64
+          |  |  +--ro polarization-mode-dispersion?   decimal64
+          |  |  +--ro penalty?                        decimal64
+          |  +--ro max-polarization-dependent-loss?        uint64
+          |  +--ro polarization-dependent-loss-penalty* []
+          |  |  +--ro index?                         uint64
+          |  |  +--ro polarization-dependent-loss?   decimal64
+          |  |  +--ro penalty?                       decimal64
+          |  +--ro modulation-type
+          |  |  +--ro standard-modulation-technique?      mt
+          |  |  +--ro proprietary-modulation-technique?   string
+          |  +--ro min-osnr?                               decimal64
+          |  +--ro rx-reference-channel-power?             decimal64
+          |  +--ro rx-channel-power-penalty* []
+          |  |  +--ro index?              uint64
+          |  |  +--ro rx-channel-power?   decimal64
+          |  |  +--ro penalty?            decimal64
+          |  +--ro min-qfactor?                            decimal64
+          |  +--ro baud-rate?                              uint64
+          |  +--ro roll-off?                               decimal64
+          |  +--ro min-carrier-spacing?                    uint64
+          |  +--ro fec-type?                               fec-type
+          |  +--ro fec-code-rate?                          decimal64
+          |  +--ro fec-threshold?                          decimal64
+          |  +--ro in-band-osnr?                           decimal64
+          |  +--ro out-of-band-osnr?                       decimal64
+          |  +--ro tx-polarization-power-difference?       decimal64
+          |  +--ro polarization-skew?                      uint64
+          |  +--ro other-properties* [value-name]
+          |     +--ro value-name    string
+          |     +--ro value?        string
+          +--ro compatible-standard-mode* [profile-uuid]
+          |  +--ro profile-uuid    -> /tapi-common:context/profile/uuid
+          +--ro compatible-organizational-mode* [profile-uuid]
+             +--ro profile-uuid    -> /tapi-common:context/profile/uuid
+  augment /tapi-common:context/tapi-connectivity:connectivity-context/tapi-connectivity:connectivity-service/tapi-connectivity:end-point/tapi-connectivity:layer-protocol-constraint:
+    +--rw otsi-mcg-connectivity-service-end-point-spec
+       +--rw number-of-otsi-mc?               uint64
+       +--rw otsi-mc-bandwidth-config-pac* [local-id]
+       |  +--rw spectrum-bandwidth?            uint64
+       |  +--rw center-frequency-offset?       uint64
+       |  +--rw center-frequency-constraint
+       |  |  +--rw adjustment-granularity?   adjustment-granularity
+       |  |  +--rw grid-type?                grid-type
+       |  +--rw edge-frequency-constraint
+       |  |  +--rw adjustment-granularity?   adjustment-granularity
+       |  |  +--rw grid-type?                grid-type
+       |  +--rw non-adjacent-spectrum?         uint64
+       |  +--rw power-management-config-pac
+       |  |  +--rw max-output-power
+       |  |  |  +--rw total-power
+       |  |  |  |  +--rw metric-values* [pm-parameter-value-type]
+       |  |  |  |     +--rw pm-parameter-value?        decimal64
+       |  |  |  |     +--rw pm-parameter-unit?         string
+       |  |  |  |     +--rw pm-parameter-value-type    metric-value-type
+       |  |  |  +--ro power-spectral-density?   decimal64
+       |  |  +--rw min-output-power
+       |  |  |  +--rw total-power
+       |  |  |  |  +--rw metric-values* [pm-parameter-value-type]
+       |  |  |  |     +--rw pm-parameter-value?        decimal64
+       |  |  |  |     +--rw pm-parameter-unit?         string
+       |  |  |  |     +--rw pm-parameter-value-type    metric-value-type
+       |  |  |  +--ro power-spectral-density?   decimal64
+       |  |  +--rw max-input-power
+       |  |  |  +--rw total-power
+       |  |  |  |  +--rw metric-values* [pm-parameter-value-type]
+       |  |  |  |     +--rw pm-parameter-value?        decimal64
+       |  |  |  |     +--rw pm-parameter-unit?         string
+       |  |  |  |     +--rw pm-parameter-value-type    metric-value-type
+       |  |  |  +--ro power-spectral-density?   decimal64
+       |  |  +--rw min-input-power
+       |  |     +--rw total-power
+       |  |     |  +--rw metric-values* [pm-parameter-value-type]
+       |  |     |     +--rw pm-parameter-value?        decimal64
+       |  |     |     +--rw pm-parameter-unit?         string
+       |  |     |     +--rw pm-parameter-value-type    metric-value-type
+       |  |     +--ro power-spectral-density?   decimal64
+       |  +--rw local-id                       string
+       |  +--rw name* [value-name]
+       |     +--rw value-name    string
+       |     +--rw value?        string
+       +--rw otsi-mc-spectrum-config-pac* [local-id]
+       |  +--rw spectrum
+       |  |  +--rw upper-frequency?   uint64
+       |  |  +--rw lower-frequency?   uint64
+       |  +--rw center-frequency-offset?       uint64
+       |  +--rw center-frequency-constraint
+       |  |  +--rw adjustment-granularity?   adjustment-granularity
+       |  |  +--rw grid-type?                grid-type
+       |  +--rw edge-frequency-constraint
+       |  |  +--rw adjustment-granularity?   adjustment-granularity
+       |  |  +--rw grid-type?                grid-type
+       |  +--rw power-management-config-pac
+       |  |  +--rw max-output-power
+       |  |  |  +--rw total-power
+       |  |  |  |  +--rw metric-values* [pm-parameter-value-type]
+       |  |  |  |     +--rw pm-parameter-value?        decimal64
+       |  |  |  |     +--rw pm-parameter-unit?         string
+       |  |  |  |     +--rw pm-parameter-value-type    metric-value-type
+       |  |  |  +--ro power-spectral-density?   decimal64
+       |  |  +--rw min-output-power
+       |  |  |  +--rw total-power
+       |  |  |  |  +--rw metric-values* [pm-parameter-value-type]
+       |  |  |  |     +--rw pm-parameter-value?        decimal64
+       |  |  |  |     +--rw pm-parameter-unit?         string
+       |  |  |  |     +--rw pm-parameter-value-type    metric-value-type
+       |  |  |  +--ro power-spectral-density?   decimal64
+       |  |  +--rw max-input-power
+       |  |  |  +--rw total-power
+       |  |  |  |  +--rw metric-values* [pm-parameter-value-type]
+       |  |  |  |     +--rw pm-parameter-value?        decimal64
+       |  |  |  |     +--rw pm-parameter-unit?         string
+       |  |  |  |     +--rw pm-parameter-value-type    metric-value-type
+       |  |  |  +--ro power-spectral-density?   decimal64
+       |  |  +--rw min-input-power
+       |  |     +--rw total-power
+       |  |     |  +--rw metric-values* [pm-parameter-value-type]
+       |  |     |     +--rw pm-parameter-value?        decimal64
+       |  |     |     +--rw pm-parameter-unit?         string
+       |  |     |     +--rw pm-parameter-value-type    metric-value-type
+       |  |     +--ro power-spectral-density?   decimal64
+       |  +--rw local-id                       string
+       |  +--rw name* [value-name]
+       |     +--rw value-name    string
+       |     +--rw value?        string
+       +--rw otsi-mc-frequency-config-pac* [local-id]
+       |  +--rw central-frequency?             uint64
+       |  +--rw center-frequency-offset?       int64
+       |  +--rw spectrum-bandwidth?            uint64
+       |  +--rw center-frequency-constraint
+       |  |  +--rw adjustment-granularity?   adjustment-granularity
+       |  |  +--rw grid-type?                grid-type
+       |  +--rw edge-frequency-constraint
+       |  |  +--rw adjustment-granularity?   adjustment-granularity
+       |  |  +--rw grid-type?                grid-type
+       |  +--rw power-management-config-pac
+       |  |  +--rw max-output-power
+       |  |  |  +--rw total-power
+       |  |  |  |  +--rw metric-values* [pm-parameter-value-type]
+       |  |  |  |     +--rw pm-parameter-value?        decimal64
+       |  |  |  |     +--rw pm-parameter-unit?         string
+       |  |  |  |     +--rw pm-parameter-value-type    metric-value-type
+       |  |  |  +--ro power-spectral-density?   decimal64
+       |  |  +--rw min-output-power
+       |  |  |  +--rw total-power
+       |  |  |  |  +--rw metric-values* [pm-parameter-value-type]
+       |  |  |  |     +--rw pm-parameter-value?        decimal64
+       |  |  |  |     +--rw pm-parameter-unit?         string
+       |  |  |  |     +--rw pm-parameter-value-type    metric-value-type
+       |  |  |  +--ro power-spectral-density?   decimal64
+       |  |  +--rw max-input-power
+       |  |  |  +--rw total-power
+       |  |  |  |  +--rw metric-values* [pm-parameter-value-type]
+       |  |  |  |     +--rw pm-parameter-value?        decimal64
+       |  |  |  |     +--rw pm-parameter-unit?         string
+       |  |  |  |     +--rw pm-parameter-value-type    metric-value-type
+       |  |  |  +--ro power-spectral-density?   decimal64
+       |  |  +--rw min-input-power
+       |  |     +--rw total-power
+       |  |     |  +--rw metric-values* [pm-parameter-value-type]
+       |  |     |     +--rw pm-parameter-value?        decimal64
+       |  |     |     +--rw pm-parameter-unit?         string
+       |  |     |     +--rw pm-parameter-value-type    metric-value-type
+       |  |     +--ro power-spectral-density?   decimal64
+       |  +--rw local-id                       string
+       |  +--rw name* [value-name]
+       |     +--rw value-name    string
+       |     +--rw value?        string
+       +--rw otsi-mc-flexi-grid-config-pac* [local-id]
+          +--rw flexi-grid-config-pac
+          |  +--rw n?                              int64
+          |  +--rw m?                              uint64
+          |  +--rw flexi-ch-spc-type?              flexi-channel-spacing
+          |  +--rw flexi-slot-width-granularity?   flexi-slot-width-granularity
+          +--rw power-management-config-pac
+          |  +--rw max-output-power
+          |  |  +--rw total-power
+          |  |  |  +--rw metric-values* [pm-parameter-value-type]
+          |  |  |     +--rw pm-parameter-value?        decimal64
+          |  |  |     +--rw pm-parameter-unit?         string
+          |  |  |     +--rw pm-parameter-value-type    metric-value-type
+          |  |  +--ro power-spectral-density?   decimal64
+          |  +--rw min-output-power
+          |  |  +--rw total-power
+          |  |  |  +--rw metric-values* [pm-parameter-value-type]
+          |  |  |     +--rw pm-parameter-value?        decimal64
+          |  |  |     +--rw pm-parameter-unit?         string
+          |  |  |     +--rw pm-parameter-value-type    metric-value-type
+          |  |  +--ro power-spectral-density?   decimal64
+          |  +--rw max-input-power
+          |  |  +--rw total-power
+          |  |  |  +--rw metric-values* [pm-parameter-value-type]
+          |  |  |     +--rw pm-parameter-value?        decimal64
+          |  |  |     +--rw pm-parameter-unit?         string
+          |  |  |     +--rw pm-parameter-value-type    metric-value-type
+          |  |  +--ro power-spectral-density?   decimal64
+          |  +--rw min-input-power
+          |     +--rw total-power
+          |     |  +--rw metric-values* [pm-parameter-value-type]
+          |     |     +--rw pm-parameter-value?        decimal64
+          |     |     +--rw pm-parameter-unit?         string
+          |     |     +--rw pm-parameter-value-type    metric-value-type
+          |     +--ro power-spectral-density?   decimal64
+          +--rw local-id                       string
+          +--rw name* [value-name]
+             +--rw value-name    string
+             +--rw value?        string
+  augment /tapi-common:context/tapi-topology:topology-context/tapi-topology:topology/tapi-topology:node/tapi-topology:owned-node-edge-point/tapi-connectivity:cep-list/tapi-connectivity:connection-end-point:
+    +--ro ots-media-connection-end-point-spec
+       +--ro spectrum-pac* [local-id]
+       |  +--ro occupied-spectrum
+       |  |  +--ro upper-frequency?   uint64
+       |  |  +--ro lower-frequency?   uint64
+       |  +--ro local-id             string
+       |  +--ro name* [value-name]
+       |     +--ro value-name    string
+       |     +--ro value?        string
+       +--ro flexi-grid-pac* [local-id]
+       |  +--ro n?                              int64
+       |  +--ro m?                              uint64
+       |  +--ro flexi-ch-spc-type?              flexi-channel-spacing
+       |  +--ro flexi-slot-width-granularity?   flexi-slot-width-granularity
+       |  +--ro local-id                        string
+       |  +--ro name* [value-name]
+       |     +--ro value-name    string
+       |     +--ro value?        string
+       +--ro ots-impairments* []
+       |  +--ro ingress-direction?        boolean
+       |  +--ro impairment-route-entry* []
+       |     +--ro ots-concentrated-loss
+       |     |  +--ro concentrated-loss?   decimal64
+       |     +--ro ots-fiber-span-impairments
+       |        +--ro fiber-type-variety?   string
+       |        +--ro pmd?                  decimal64
+       |        +--ro length?               uint64
+       |        +--ro loss-coef?            decimal64
+       |        +--ro total-loss?           decimal64
+       |        +--ro connector-in?         decimal64
+       |        +--ro connector-out?        decimal64
+       +--ro power-measurement-pac
+       |  +--ro measured-input-power
+       |  |  +--ro total-power
+       |  |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |  |     +--ro pm-parameter-value?        decimal64
+       |  |  |     +--ro pm-parameter-unit?         string
+       |  |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  |  +--ro power-spectral-density?   decimal64
+       |  +--ro measured-output-power
+       |     +--ro total-power
+       |     |  +--ro metric-values* [pm-parameter-value-type]
+       |     |     +--ro pm-parameter-value?        decimal64
+       |     |     +--ro pm-parameter-unit?         string
+       |     |     +--ro pm-parameter-value-type    metric-value-type
+       |     +--ro power-spectral-density?   decimal64
+       +--ro osc-params
+          +--ro power-measurement-pac
+             +--ro measured-input-power
+             |  +--ro total-power
+             |  |  +--ro metric-values* [pm-parameter-value-type]
+             |  |     +--ro pm-parameter-value?        decimal64
+             |  |     +--ro pm-parameter-unit?         string
+             |  |     +--ro pm-parameter-value-type    metric-value-type
+             |  +--ro power-spectral-density?   decimal64
+             +--ro measured-output-power
+                +--ro total-power
+                |  +--ro metric-values* [pm-parameter-value-type]
+                |     +--ro pm-parameter-value?        decimal64
+                |     +--ro pm-parameter-unit?         string
+                |     +--ro pm-parameter-value-type    metric-value-type
+                +--ro power-spectral-density?   decimal64
+  augment /tapi-common:context/tapi-topology:topology-context/tapi-topology:topology/tapi-topology:node/tapi-topology:owned-node-edge-point/tapi-connectivity:cep-list/tapi-connectivity:connection-end-point:
+    +--ro oms-connection-end-point-spec
+       +--ro spectrum-pac* [local-id]
+       |  +--ro occupied-spectrum
+       |  |  +--ro upper-frequency?   uint64
+       |  |  +--ro lower-frequency?   uint64
+       |  +--ro local-id             string
+       |  +--ro name* [value-name]
+       |     +--ro value-name    string
+       |     +--ro value?        string
+       +--ro flexi-grid-pac* [local-id]
+       |  +--ro n?                              int64
+       |  +--ro m?                              uint64
+       |  +--ro flexi-ch-spc-type?              flexi-channel-spacing
+       |  +--ro flexi-slot-width-granularity?   flexi-slot-width-granularity
+       |  +--ro local-id                        string
+       |  +--ro name* [value-name]
+       |     +--ro value-name    string
+       |     +--ro value?        string
+       +--ro amplification* [local-id]
+       |  +--ro frequency-range
+       |  |  +--ro upper-frequency?   uint64
+       |  |  +--ro lower-frequency?   uint64
+       |  +--ro ingress-direction?      boolean
+       |  +--ro first-of-chain?         boolean
+       |  +--ro actual-gain?            decimal64
+       |  +--ro actual-tilt?            decimal64
+       |  +--ro out-voa?                decimal64
+       |  +--ro in-voa?                 decimal64
+       |  +--ro optical-output-power?   decimal64
+       |  +--ro optical-input-power?    decimal64
+       |  +--ro profile
+       |  |  +--ro profile-uuid?   -> /tapi-common:context/profile/uuid
+       |  +--ro amplification* [topology-uuid node-uuid node-edge-point-uuid connection-end-point-uuid amplification-local-id]
+       |  |  +--ro topology-uuid                -> /tapi-common:context/tapi-topology:topology-context/topology/uuid
+       |  |  +--ro node-uuid                    -> /tapi-common:context/tapi-topology:topology-context/topology/node/uuid
+       |  |  +--ro node-edge-point-uuid         -> /tapi-common:context/tapi-topology:topology-context/topology/node/owned-node-edge-point/uuid
+       |  |  +--ro connection-end-point-uuid    -> /tapi-common:context/tapi-topology:topology-context/topology/node/owned-node-edge-point/tapi-connectivity:cep-list/connection-end-point/uuid
+       |  |  +--ro amplification-local-id       -> /tapi-common:context/tapi-topology:topology-context/topology/node/owned-node-edge-point/tapi-connectivity:cep-list/connection-end-point/tapi-photonic-media:oms-connection-end-point-spec/amplification/local-id
+       |  +--ro local-id                string
+       |  +--ro name* [value-name]
+       |     +--ro value-name    string
+       |     +--ro value?        string
+       +--ro oms-general-optical-params* []
+       |  +--ro frequency-range
+       |  |  +--ro upper-frequency?   uint64
+       |  |  +--ro lower-frequency?   uint64
+       |  +--ro ingress-direction?   boolean
+       |  +--ro generalized-snr?     decimal64
+       |  +--ro power-params
+       |     +--ro power-spectral-density
+       |     |  +--ro nominal-power-spectral-density?   decimal64
+       |     +--ro channel-power
+       |        +--ro nominal-carrier-power?   decimal64
+       +--ro power-measurement-pac
+          +--ro measured-input-power
+          |  +--ro total-power
+          |  |  +--ro metric-values* [pm-parameter-value-type]
+          |  |     +--ro pm-parameter-value?        decimal64
+          |  |     +--ro pm-parameter-unit?         string
+          |  |     +--ro pm-parameter-value-type    metric-value-type
+          |  +--ro power-spectral-density?   decimal64
+          +--ro measured-output-power
+             +--ro total-power
+             |  +--ro metric-values* [pm-parameter-value-type]
+             |     +--ro pm-parameter-value?        decimal64
+             |     +--ro pm-parameter-unit?         string
+             |     +--ro pm-parameter-value-type    metric-value-type
+             +--ro power-spectral-density?   decimal64
+  augment /tapi-common:context/tapi-topology:topology-context/tapi-topology:topology/tapi-topology:node/tapi-topology:owned-node-edge-point/tapi-connectivity:cep-list/tapi-connectivity:connection-end-point:
+    +--ro mc-connection-end-point-spec
+       +--ro spectrum-pac
+       |  +--ro occupied-spectrum
+       |  |  +--ro upper-frequency?   uint64
+       |  |  +--ro lower-frequency?   uint64
+       |  +--ro local-id?            string
+       |  +--ro name* [value-name]
+       |     +--ro value-name    string
+       |     +--ro value?        string
+       +--ro flexi-grid-pac
+       |  +--ro n?                              int64
+       |  +--ro m?                              uint64
+       |  +--ro flexi-ch-spc-type?              flexi-channel-spacing
+       |  +--ro flexi-slot-width-granularity?   flexi-slot-width-granularity
+       |  +--ro local-id?                       string
+       |  +--ro name* [value-name]
+       |     +--ro value-name    string
+       |     +--ro value?        string
+       +--ro power-measurement-pac
+          +--ro measured-input-power
+          |  +--ro total-power
+          |  |  +--ro metric-values* [pm-parameter-value-type]
+          |  |     +--ro pm-parameter-value?        decimal64
+          |  |     +--ro pm-parameter-unit?         string
+          |  |     +--ro pm-parameter-value-type    metric-value-type
+          |  +--ro power-spectral-density?   decimal64
+          +--ro measured-output-power
+             +--ro total-power
+             |  +--ro metric-values* [pm-parameter-value-type]
+             |     +--ro pm-parameter-value?        decimal64
+             |     +--ro pm-parameter-unit?         string
+             |     +--ro pm-parameter-value-type    metric-value-type
+             +--ro power-spectral-density?   decimal64
+  augment /tapi-common:context/tapi-common:profile:
+    +--ro connectivity-impairment-profile
+       +--ro frequency-range
+       |  +--ro upper-frequency?   uint64
+       |  +--ro lower-frequency?   uint64
+       +--ro roadm-pmd?                decimal64
+       +--ro roadm-cd?                 decimal64
+       +--ro roadm-pdl?                decimal64
+       +--ro roadm-inband-crosstalk?   decimal64
+       +--ro roadm-maxloss?            decimal64
+       +--ro roadm-minloss?            decimal64
+       +--ro roadm-typloss?            decimal64
+       +--ro roadm-pmin?               decimal64
+       +--ro roadm-pmax?               decimal64
+       +--ro roadm-ptyp?               decimal64
+       +--ro roadm-osnr?               decimal64
+       +--ro roadm-noise-figure?       decimal64
+  augment /tapi-common:context/tapi-common:profile:
+    +--ro amplification-profile
+       +--ro frequency-range
+       |  +--ro upper-frequency?   uint64
+       |  +--ro lower-frequency?   uint64
+       +--ro gain-range
+       |  +--ro min-gain?   decimal64
+       |  +--ro max-gain?   decimal64
+       +--ro noise-figure-range
+       |  +--ro min-noise-figure?   decimal64
+       |  +--ro max-noise-figure?   decimal64
+       +--ro max-power?             decimal64
+       +--ro extended-gain-range
+          +--ro min-gain?   decimal64
+          +--ro max-gain?   decimal64
+  augment /tapi-common:context/tapi-oam:oam-context/tapi-oam:oam-job/tapi-oam:current-data:
+    +--ro photonic-performance-data
+       +--ro optical-input-power
+       |  +--ro total-power
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro power-spectral-density?   decimal64
+       +--ro optical-output-power
+       |  +--ro total-power
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro power-spectral-density?   decimal64
+       +--ro input-voa
+       |  +--ro metric-values* [pm-parameter-value-type]
+       |     +--ro pm-parameter-value?        decimal64
+       |     +--ro pm-parameter-unit?         string
+       |     +--ro pm-parameter-value-type    metric-value-type
+       +--ro output-voa
+       |  +--ro metric-values* [pm-parameter-value-type]
+       |     +--ro pm-parameter-value?        decimal64
+       |     +--ro pm-parameter-unit?         string
+       |     +--ro pm-parameter-value-type    metric-value-type
+       +--ro optical-gain
+       |  +--ro metric-values* [pm-parameter-value-type]
+       |     +--ro pm-parameter-value?        decimal64
+       |     +--ro pm-parameter-unit?         string
+       |     +--ro pm-parameter-value-type    metric-value-type
+       +--ro optical-tilt
+       |  +--ro metric-values* [pm-parameter-value-type]
+       |     +--ro pm-parameter-value?        decimal64
+       |     +--ro pm-parameter-unit?         string
+       |     +--ro pm-parameter-value-type    metric-value-type
+       +--ro amplification-performance-data* [local-id]
+       |  +--ro optical-input-power
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro optical-output-power
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro input-voa
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro output-voa
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro optical-gain
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro optical-tilt
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro local-id                string
+       |  +--ro name* [value-name]
+       |     +--ro value-name    string
+       |     +--ro value?        string
+       +--ro otsi-monitoring-pac
+       |  +--ro polarization-mode-dispersion
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro chromatic-dispersion
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro diff-group-delay
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro frequency-offset
+       |     +--ro metric-values* [pm-parameter-value-type]
+       |        +--ro pm-parameter-value?        decimal64
+       |        +--ro pm-parameter-unit?         string
+       |        +--ro pm-parameter-value-type    metric-value-type
+       +--ro osc-monitoring-pac
+          +--ro optical-input-power
+          |  +--ro total-power
+          |  |  +--ro metric-values* [pm-parameter-value-type]
+          |  |     +--ro pm-parameter-value?        decimal64
+          |  |     +--ro pm-parameter-unit?         string
+          |  |     +--ro pm-parameter-value-type    metric-value-type
+          |  +--ro power-spectral-density?   decimal64
+          +--ro optical-output-power
+             +--ro total-power
+             |  +--ro metric-values* [pm-parameter-value-type]
+             |     +--ro pm-parameter-value?        decimal64
+             |     +--ro pm-parameter-unit?         string
+             |     +--ro pm-parameter-value-type    metric-value-type
+             +--ro power-spectral-density?   decimal64
+  augment /tapi-common:context/tapi-oam:oam-context/tapi-oam:oam-job/tapi-oam:current-data/tapi-oam:history-data:
+    +--ro photonic-performance-data
+       +--ro optical-input-power
+       |  +--ro total-power
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro power-spectral-density?   decimal64
+       +--ro optical-output-power
+       |  +--ro total-power
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro power-spectral-density?   decimal64
+       +--ro input-voa
+       |  +--ro metric-values* [pm-parameter-value-type]
+       |     +--ro pm-parameter-value?        decimal64
+       |     +--ro pm-parameter-unit?         string
+       |     +--ro pm-parameter-value-type    metric-value-type
+       +--ro output-voa
+       |  +--ro metric-values* [pm-parameter-value-type]
+       |     +--ro pm-parameter-value?        decimal64
+       |     +--ro pm-parameter-unit?         string
+       |     +--ro pm-parameter-value-type    metric-value-type
+       +--ro optical-gain
+       |  +--ro metric-values* [pm-parameter-value-type]
+       |     +--ro pm-parameter-value?        decimal64
+       |     +--ro pm-parameter-unit?         string
+       |     +--ro pm-parameter-value-type    metric-value-type
+       +--ro optical-tilt
+       |  +--ro metric-values* [pm-parameter-value-type]
+       |     +--ro pm-parameter-value?        decimal64
+       |     +--ro pm-parameter-unit?         string
+       |     +--ro pm-parameter-value-type    metric-value-type
+       +--ro amplification-performance-data* [local-id]
+       |  +--ro optical-input-power
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro optical-output-power
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro input-voa
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro output-voa
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro optical-gain
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro optical-tilt
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro local-id                string
+       |  +--ro name* [value-name]
+       |     +--ro value-name    string
+       |     +--ro value?        string
+       +--ro otsi-monitoring-pac
+       |  +--ro polarization-mode-dispersion
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro chromatic-dispersion
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro diff-group-delay
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro frequency-offset
+       |     +--ro metric-values* [pm-parameter-value-type]
+       |        +--ro pm-parameter-value?        decimal64
+       |        +--ro pm-parameter-unit?         string
+       |        +--ro pm-parameter-value-type    metric-value-type
+       +--ro osc-monitoring-pac
+          +--ro optical-input-power
+          |  +--ro total-power
+          |  |  +--ro metric-values* [pm-parameter-value-type]
+          |  |     +--ro pm-parameter-value?        decimal64
+          |  |     +--ro pm-parameter-unit?         string
+          |  |     +--ro pm-parameter-value-type    metric-value-type
+          |  +--ro power-spectral-density?   decimal64
+          +--ro optical-output-power
+             +--ro total-power
+             |  +--ro metric-values* [pm-parameter-value-type]
+             |     +--ro pm-parameter-value?        decimal64
+             |     +--ro pm-parameter-unit?         string
+             |     +--ro pm-parameter-value-type    metric-value-type
+             +--ro power-spectral-density?   decimal64
+  augment /tapi-common:context/tapi-path-computation:path-computation-context/tapi-path-computation:path-comp-service/tapi-path-computation:topology-constraint/tapi-path-computation:include-link-and-partition:
+    +--rw photonic-position
+       +--rw central-frequency?   uint64
+       +--rw spectrum
+          +--rw upper-frequency?   uint64
+          +--rw lower-frequency?   uint64
+  augment /tapi-common:context/tapi-path-computation:path-computation-context/tapi-path-computation:path-comp-service/tapi-path-computation:topology-constraint/tapi-path-computation:include-nep-and-partition:
+    +--rw photonic-position
+       +--rw central-frequency?   uint64
+       +--rw spectrum
+          +--rw upper-frequency?   uint64
+          +--rw lower-frequency?   uint64
+  augment /tapi-common:context/tapi-path-computation:path-computation-context/tapi-path-computation:path-comp-service/tapi-path-computation:topology-constraint/tapi-path-computation:exclude-link-and-partition:
+    +--rw photonic-position
+       +--rw central-frequency?   uint64
+       +--rw spectrum
+          +--rw upper-frequency?   uint64
+          +--rw lower-frequency?   uint64
+  augment /tapi-common:context/tapi-path-computation:path-computation-context/tapi-path-computation:path-comp-service/tapi-path-computation:topology-constraint/tapi-path-computation:exclude-nep-and-partition:
+    +--rw photonic-position
+       +--rw central-frequency?   uint64
+       +--rw spectrum
+          +--rw upper-frequency?   uint64
+          +--rw lower-frequency?   uint64
+  augment /tapi-common:context/tapi-oam:oam-context/tapi-oam:cep-pm-data/tapi-oam:history-data:
+    +--ro photonic-performance-data
+       +--ro optical-input-power
+       |  +--ro total-power
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro power-spectral-density?   decimal64
+       +--ro optical-output-power
+       |  +--ro total-power
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro power-spectral-density?   decimal64
+       +--ro input-voa
+       |  +--ro metric-values* [pm-parameter-value-type]
+       |     +--ro pm-parameter-value?        decimal64
+       |     +--ro pm-parameter-unit?         string
+       |     +--ro pm-parameter-value-type    metric-value-type
+       +--ro output-voa
+       |  +--ro metric-values* [pm-parameter-value-type]
+       |     +--ro pm-parameter-value?        decimal64
+       |     +--ro pm-parameter-unit?         string
+       |     +--ro pm-parameter-value-type    metric-value-type
+       +--ro optical-gain
+       |  +--ro metric-values* [pm-parameter-value-type]
+       |     +--ro pm-parameter-value?        decimal64
+       |     +--ro pm-parameter-unit?         string
+       |     +--ro pm-parameter-value-type    metric-value-type
+       +--ro optical-tilt
+       |  +--ro metric-values* [pm-parameter-value-type]
+       |     +--ro pm-parameter-value?        decimal64
+       |     +--ro pm-parameter-unit?         string
+       |     +--ro pm-parameter-value-type    metric-value-type
+       +--ro amplification-performance-data* [local-id]
+       |  +--ro optical-input-power
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro optical-output-power
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro input-voa
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro output-voa
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro optical-gain
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro optical-tilt
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro local-id                string
+       |  +--ro name* [value-name]
+       |     +--ro value-name    string
+       |     +--ro value?        string
+       +--ro otsi-monitoring-pac
+       |  +--ro polarization-mode-dispersion
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro chromatic-dispersion
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro diff-group-delay
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro frequency-offset
+       |     +--ro metric-values* [pm-parameter-value-type]
+       |        +--ro pm-parameter-value?        decimal64
+       |        +--ro pm-parameter-unit?         string
+       |        +--ro pm-parameter-value-type    metric-value-type
+       +--ro osc-monitoring-pac
+          +--ro optical-input-power
+          |  +--ro total-power
+          |  |  +--ro metric-values* [pm-parameter-value-type]
+          |  |     +--ro pm-parameter-value?        decimal64
+          |  |     +--ro pm-parameter-unit?         string
+          |  |     +--ro pm-parameter-value-type    metric-value-type
+          |  +--ro power-spectral-density?   decimal64
+          +--ro optical-output-power
+             +--ro total-power
+             |  +--ro metric-values* [pm-parameter-value-type]
+             |     +--ro pm-parameter-value?        decimal64
+             |     +--ro pm-parameter-unit?         string
+             |     +--ro pm-parameter-value-type    metric-value-type
+             +--ro power-spectral-density?   decimal64
+  augment /tapi-common:context/tapi-oam:oam-context/tapi-oam:mep-pm-data/tapi-oam:history-data:
+    +--ro photonic-performance-data
+       +--ro optical-input-power
+       |  +--ro total-power
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro power-spectral-density?   decimal64
+       +--ro optical-output-power
+       |  +--ro total-power
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro power-spectral-density?   decimal64
+       +--ro input-voa
+       |  +--ro metric-values* [pm-parameter-value-type]
+       |     +--ro pm-parameter-value?        decimal64
+       |     +--ro pm-parameter-unit?         string
+       |     +--ro pm-parameter-value-type    metric-value-type
+       +--ro output-voa
+       |  +--ro metric-values* [pm-parameter-value-type]
+       |     +--ro pm-parameter-value?        decimal64
+       |     +--ro pm-parameter-unit?         string
+       |     +--ro pm-parameter-value-type    metric-value-type
+       +--ro optical-gain
+       |  +--ro metric-values* [pm-parameter-value-type]
+       |     +--ro pm-parameter-value?        decimal64
+       |     +--ro pm-parameter-unit?         string
+       |     +--ro pm-parameter-value-type    metric-value-type
+       +--ro optical-tilt
+       |  +--ro metric-values* [pm-parameter-value-type]
+       |     +--ro pm-parameter-value?        decimal64
+       |     +--ro pm-parameter-unit?         string
+       |     +--ro pm-parameter-value-type    metric-value-type
+       +--ro amplification-performance-data* [local-id]
+       |  +--ro optical-input-power
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro optical-output-power
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro input-voa
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro output-voa
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro optical-gain
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro optical-tilt
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro local-id                string
+       |  +--ro name* [value-name]
+       |     +--ro value-name    string
+       |     +--ro value?        string
+       +--ro otsi-monitoring-pac
+       |  +--ro polarization-mode-dispersion
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro chromatic-dispersion
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro diff-group-delay
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro frequency-offset
+       |     +--ro metric-values* [pm-parameter-value-type]
+       |        +--ro pm-parameter-value?        decimal64
+       |        +--ro pm-parameter-unit?         string
+       |        +--ro pm-parameter-value-type    metric-value-type
+       +--ro osc-monitoring-pac
+          +--ro optical-input-power
+          |  +--ro total-power
+          |  |  +--ro metric-values* [pm-parameter-value-type]
+          |  |     +--ro pm-parameter-value?        decimal64
+          |  |     +--ro pm-parameter-unit?         string
+          |  |     +--ro pm-parameter-value-type    metric-value-type
+          |  +--ro power-spectral-density?   decimal64
+          +--ro optical-output-power
+             +--ro total-power
+             |  +--ro metric-values* [pm-parameter-value-type]
+             |     +--ro pm-parameter-value?        decimal64
+             |     +--ro pm-parameter-unit?         string
+             |     +--ro pm-parameter-value-type    metric-value-type
+             +--ro power-spectral-density?   decimal64
+  augment /tapi-common:context/tapi-oam:oam-context/tapi-oam:mip-pm-data/tapi-oam:history-data:
+    +--ro photonic-performance-data
+       +--ro optical-input-power
+       |  +--ro total-power
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro power-spectral-density?   decimal64
+       +--ro optical-output-power
+       |  +--ro total-power
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro power-spectral-density?   decimal64
+       +--ro input-voa
+       |  +--ro metric-values* [pm-parameter-value-type]
+       |     +--ro pm-parameter-value?        decimal64
+       |     +--ro pm-parameter-unit?         string
+       |     +--ro pm-parameter-value-type    metric-value-type
+       +--ro output-voa
+       |  +--ro metric-values* [pm-parameter-value-type]
+       |     +--ro pm-parameter-value?        decimal64
+       |     +--ro pm-parameter-unit?         string
+       |     +--ro pm-parameter-value-type    metric-value-type
+       +--ro optical-gain
+       |  +--ro metric-values* [pm-parameter-value-type]
+       |     +--ro pm-parameter-value?        decimal64
+       |     +--ro pm-parameter-unit?         string
+       |     +--ro pm-parameter-value-type    metric-value-type
+       +--ro optical-tilt
+       |  +--ro metric-values* [pm-parameter-value-type]
+       |     +--ro pm-parameter-value?        decimal64
+       |     +--ro pm-parameter-unit?         string
+       |     +--ro pm-parameter-value-type    metric-value-type
+       +--ro amplification-performance-data* [local-id]
+       |  +--ro optical-input-power
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro optical-output-power
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro input-voa
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro output-voa
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro optical-gain
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro optical-tilt
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro local-id                string
+       |  +--ro name* [value-name]
+       |     +--ro value-name    string
+       |     +--ro value?        string
+       +--ro otsi-monitoring-pac
+       |  +--ro polarization-mode-dispersion
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro chromatic-dispersion
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro diff-group-delay
+       |  |  +--ro metric-values* [pm-parameter-value-type]
+       |  |     +--ro pm-parameter-value?        decimal64
+       |  |     +--ro pm-parameter-unit?         string
+       |  |     +--ro pm-parameter-value-type    metric-value-type
+       |  +--ro frequency-offset
+       |     +--ro metric-values* [pm-parameter-value-type]
+       |        +--ro pm-parameter-value?        decimal64
+       |        +--ro pm-parameter-unit?         string
+       |        +--ro pm-parameter-value-type    metric-value-type
+       +--ro osc-monitoring-pac
+          +--ro optical-input-power
+          |  +--ro total-power
+          |  |  +--ro metric-values* [pm-parameter-value-type]
+          |  |     +--ro pm-parameter-value?        decimal64
+          |  |     +--ro pm-parameter-unit?         string
+          |  |     +--ro pm-parameter-value-type    metric-value-type
+          |  +--ro power-spectral-density?   decimal64
+          +--ro optical-output-power
+             +--ro total-power
+             |  +--ro metric-values* [pm-parameter-value-type]
+             |     +--ro pm-parameter-value?        decimal64
+             |     +--ro pm-parameter-unit?         string
+             |     +--ro pm-parameter-value-type    metric-value-type
+             +--ro power-spectral-density?   decimal64

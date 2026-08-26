@@ -1,0 +1,6 @@
+include LICENSE NOTICE README.md CHANGELOG.md
+include CONTRIBUTING.md CODE_OF_CONDUCT.md GOVERNANCE.md MAINTAINERS.md SECURITY.md
+recursive-include tapi_overlay/spec *.yaml *.tree *.md
+include tapi_overlay/py.typed
+recursive-include docs *.md
+graft .github

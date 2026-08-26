@@ -1,0 +1,265 @@
+module: tapi-notification
+
+  augment /tapi-common:context:
+    +--rw notification-context
+       +--rw notif-subscription* [uuid]
+       |  +--ro notification* [notification-uuid]
+       |  |  +--ro notification-uuid    -> /tapi-common:context/tapi-notification:notification-context/notification/uuid
+       |  +--ro event-notification* [event-notification-uuid]
+       |  |  +--ro event-notification-uuid    -> /tapi-common:context/tapi-notification:notification-context/event-notification/uuid
+       |  +--rw notification-channel
+       |  |  +--rw stream-address?     string
+       |  |  +--ro next-sequence-no?   uint64
+       |  |  +--rw local-id?           string
+       |  |  +--rw name* [value-name]
+       |  |     +--rw value-name    string
+       |  |     +--rw value?        string
+       |  +--rw subscription-filter* [local-id]
+       |  |  +--rw requested-notification-types*   notification-type
+       |  |  +--rw requested-object-types*         tapi-common:object-type
+       |  |  +--rw requested-layer-protocols*      tapi-common:layer-protocol-name
+       |  |  +--rw requested-object-identifier*    tapi-common:uuid
+       |  |  +--rw include-content?                boolean
+       |  |  +--rw local-id                        string
+       |  |  +--rw name* [value-name]
+       |  |     +--rw value-name    string
+       |  |     +--rw value?        string
+       |  +--rw subscription-state?     subscription-state
+       |  +--rw uuid                    uuid
+       |  +--rw name* [value-name]
+       |     +--rw value-name    string
+       |     +--rw value?        string
+       +--ro notification* [uuid]
+       |  +--ro notification-type?          notification-type
+       |  +--ro target-object-type?         tapi-common:object-type
+       |  +--ro target-object-identifier?   tapi-common:uuid
+       |  +--ro target-object-name* [value-name]
+       |  |  +--ro value-name    string
+       |  |  +--ro value?        string
+       |  +--ro event-time-stamp?           tapi-common:date-and-time
+       |  +--ro sequence-number?            uint64
+       |  +--ro source-indicator?           source-indicator
+       |  +--ro layer-protocol-name?        tapi-common:layer-protocol-name
+       |  +--ro layer-protocol-qualifier?   tapi-common:layer-protocol-qualifier
+       |  +--ro changed-attributes* [value-name]
+       |  |  +--ro value-name    string
+       |  |  +--ro old-value?    string
+       |  |  +--ro new-value?    string
+       |  +--ro additional-info* [value-name]
+       |  |  +--ro value-name    string
+       |  |  +--ro value?        string
+       |  +--ro additional-text?            string
+       |  +--ro uuid                        uuid
+       |  +--ro name* [value-name]
+       |     +--ro value-name    string
+       |     +--ro value?        string
+       +--ro event-notification* [uuid]
+          +--ro target-object-type?               tapi-common:object-type
+          +--ro target-object-identifier?         tapi-common:uuid
+          +--ro target-local-object-type?         tapi-common:object-type
+          +--ro target-local-object-identifier?   string
+          +--ro target-object-dri?                string
+          +--ro target-object-name* [value-name]
+          |  +--ro value-name    string
+          |  +--ro value?        string
+          +--ro layer-protocol-name?              tapi-common:layer-protocol-name
+          +--ro layer-protocol-qualifier*         tapi-common:layer-protocol-qualifier
+          +--ro event-notification-type?          notification-type
+          +--ro event-time-stamp?                 tapi-common:date-and-time
+          +--ro sequence-number?                  uint64
+          +--ro source-indicator?                 source-indicator
+          +--ro additional-info* [value-name]
+          |  +--ro value-name    string
+          |  +--ro value?        string
+          +--ro uuid                              uuid
+          +--ro name* [value-name]
+          |  +--ro value-name    string
+          |  +--ro value?        string
+          +--ro attribute-value-change
+          |  +--ro changed-attributes?   string
+          +--ro profile
+          |  +--ro profile-type?       profile-type
+          |  +--ro grouped-profiles* [profile-uuid]
+          |  |  +--ro profile-uuid    -> /tapi-common:context/profile/uuid
+          |  +--ro uuid?               uuid
+          |  +--ro name* [value-name]
+          |     +--ro value-name    string
+          |     +--ro value?        string
+          +--ro service-interface-point
+             +--ro layer-protocol-name?                                layer-protocol-name
+             +--ro direction?                                          direction
+             +--ro supported-cep-layer-protocol-qualifier-instances* []
+             |  +--ro layer-protocol-qualifier?   layer-protocol-qualifier
+             |  +--ro number-of-cep-instances?    uint64
+             +--ro available-cep-layer-protocol-qualifier-instances* []
+             |  +--ro layer-protocol-qualifier?   layer-protocol-qualifier
+             |  +--ro number-of-cep-instances?    uint64
+             +--ro supported-payload-structure* []
+             |  +--ro multiplexing-sequence*                     layer-protocol-qualifier
+             |  +--ro number-of-cep-instances?                   uint64
+             |  +--ro capacity
+             |  |  +--ro value?   decimal64
+             |  |  +--ro unit?    capacity-unit
+             |  +--ro potential-cep-instance-capability* [potential-cep-instance-identifier]
+             |  |  +--ro potential-cep-instance-identifier          string
+             |  |  +--ro potentially-supported-position-or-label*   position-or-label
+             |  +--ro potential-cep-instance-capability-range* [range-identifier]
+             |     +--ro range-identifier                                 string
+             |     +--ro potentially-supported-position-or-label-range* []
+             |        +--ro position-or-label-range* []
+             |           +--ro upper?   string
+             |           +--ro lower?   string
+             +--ro available-payload-structure* []
+             |  +--ro multiplexing-sequence*                     layer-protocol-qualifier
+             |  +--ro number-of-cep-instances?                   uint64
+             |  +--ro capacity
+             |  |  +--ro value?   decimal64
+             |  |  +--ro unit?    capacity-unit
+             |  +--ro potential-cep-instance-capability* [potential-cep-instance-identifier]
+             |  |  +--ro potential-cep-instance-identifier          string
+             |  |  +--ro potentially-supported-position-or-label*   position-or-label
+             |  +--ro potential-cep-instance-capability-range* [range-identifier]
+             |     +--ro range-identifier                                 string
+             |     +--ro potentially-supported-position-or-label-range* []
+             |        +--ro position-or-label-range* []
+             |           +--ro upper?   string
+             |           +--ro lower?   string
+             +--ro profile* [profile-uuid]
+             |  +--ro profile-uuid    -> /tapi-common:context/profile/uuid
+             +--ro sink-profile* [profile-uuid]
+             |  +--ro profile-uuid    -> /tapi-common:context/profile/uuid
+             +--ro source-profile* [profile-uuid]
+             |  +--ro profile-uuid    -> /tapi-common:context/profile/uuid
+             +--ro uuid?                                               uuid
+             +--ro name* [value-name]
+             |  +--ro value-name    string
+             |  +--ro value?        string
+             +--ro administrative-state?                               administrative-state
+             +--ro operational-state?                                  operational-state
+             +--ro lifecycle-state?                                    lifecycle-state
+             +--ro total-potential-capacity
+             |  +--ro total-size
+             |     +--ro value?   decimal64
+             |     +--ro unit?    capacity-unit
+             +--ro available-capacity
+                +--ro total-size
+                   +--ro value?   decimal64
+                   +--ro unit?    capacity-unit
+
+  notifications:
+    +---n notification
+    |  +--ro notification-type?          notification-type
+    |  +--ro target-object-type?         tapi-common:object-type
+    |  +--ro target-object-identifier?   tapi-common:uuid
+    |  +--ro target-object-name* [value-name]
+    |  |  +--ro value-name    string
+    |  |  +--ro value?        string
+    |  +--ro event-time-stamp?           tapi-common:date-and-time
+    |  +--ro sequence-number?            uint64
+    |  +--ro source-indicator?           source-indicator
+    |  +--ro layer-protocol-name?        tapi-common:layer-protocol-name
+    |  +--ro layer-protocol-qualifier?   tapi-common:layer-protocol-qualifier
+    |  +--ro changed-attributes* [value-name]
+    |  |  +--ro value-name    string
+    |  |  +--ro old-value?    string
+    |  |  +--ro new-value?    string
+    |  +--ro additional-info* [value-name]
+    |  |  +--ro value-name    string
+    |  |  +--ro value?        string
+    |  +--ro additional-text?            string
+    |  +--ro uuid?                       uuid
+    |  +--ro name* [value-name]
+    |     +--ro value-name    string
+    |     +--ro value?        string
+    +---n event-notification
+       +--ro target-object-type?               tapi-common:object-type
+       +--ro target-object-identifier?         tapi-common:uuid
+       +--ro target-local-object-type?         tapi-common:object-type
+       +--ro target-local-object-identifier?   string
+       +--ro target-object-dri?                string
+       +--ro target-object-name* [value-name]
+       |  +--ro value-name    string
+       |  +--ro value?        string
+       +--ro layer-protocol-name?              tapi-common:layer-protocol-name
+       +--ro layer-protocol-qualifier*         tapi-common:layer-protocol-qualifier
+       +--ro event-notification-type?          notification-type
+       +--ro event-time-stamp?                 tapi-common:date-and-time
+       +--ro sequence-number?                  uint64
+       +--ro source-indicator?                 source-indicator
+       +--ro additional-info* [value-name]
+       |  +--ro value-name    string
+       |  +--ro value?        string
+       +--ro uuid?                             uuid
+       +--ro name* [value-name]
+       |  +--ro value-name    string
+       |  +--ro value?        string
+       +--ro attribute-value-change
+       |  +--ro changed-attributes?   string
+       +--ro profile
+       |  +--ro profile-type?       profile-type
+       |  +--ro grouped-profiles* [profile-uuid]
+       |  |  +--ro profile-uuid    -> /tapi-common:context/profile/uuid
+       |  +--ro uuid?               uuid
+       |  +--ro name* [value-name]
+       |     +--ro value-name    string
+       |     +--ro value?        string
+       +--ro service-interface-point
+          +--ro layer-protocol-name?                                layer-protocol-name
+          +--ro direction?                                          direction
+          +--ro supported-cep-layer-protocol-qualifier-instances* []
+          |  +--ro layer-protocol-qualifier?   layer-protocol-qualifier
+          |  +--ro number-of-cep-instances?    uint64
+          +--ro available-cep-layer-protocol-qualifier-instances* []
+          |  +--ro layer-protocol-qualifier?   layer-protocol-qualifier
+          |  +--ro number-of-cep-instances?    uint64
+          +--ro supported-payload-structure* []
+          |  +--ro multiplexing-sequence*                     layer-protocol-qualifier
+          |  +--ro number-of-cep-instances?                   uint64
+          |  +--ro capacity
+          |  |  +--ro value?   decimal64
+          |  |  +--ro unit?    capacity-unit
+          |  +--ro potential-cep-instance-capability* [potential-cep-instance-identifier]
+          |  |  +--ro potential-cep-instance-identifier          string
+          |  |  +--ro potentially-supported-position-or-label*   position-or-label
+          |  +--ro potential-cep-instance-capability-range* [range-identifier]
+          |     +--ro range-identifier                                 string
+          |     +--ro potentially-supported-position-or-label-range* []
+          |        +--ro position-or-label-range* []
+          |           +--ro upper?   string
+          |           +--ro lower?   string
+          +--ro available-payload-structure* []
+          |  +--ro multiplexing-sequence*                     layer-protocol-qualifier
+          |  +--ro number-of-cep-instances?                   uint64
+          |  +--ro capacity
+          |  |  +--ro value?   decimal64
+          |  |  +--ro unit?    capacity-unit
+          |  +--ro potential-cep-instance-capability* [potential-cep-instance-identifier]
+          |  |  +--ro potential-cep-instance-identifier          string
+          |  |  +--ro potentially-supported-position-or-label*   position-or-label
+          |  +--ro potential-cep-instance-capability-range* [range-identifier]
+          |     +--ro range-identifier                                 string
+          |     +--ro potentially-supported-position-or-label-range* []
+          |        +--ro position-or-label-range* []
+          |           +--ro upper?   string
+          |           +--ro lower?   string
+          +--ro profile* [profile-uuid]
+          |  +--ro profile-uuid    -> /tapi-common:context/profile/uuid
+          +--ro sink-profile* [profile-uuid]
+          |  +--ro profile-uuid    -> /tapi-common:context/profile/uuid
+          +--ro source-profile* [profile-uuid]
+          |  +--ro profile-uuid    -> /tapi-common:context/profile/uuid
+          +--ro uuid?                                               uuid
+          +--ro name* [value-name]
+          |  +--ro value-name    string
+          |  +--ro value?        string
+          +--ro administrative-state?                               administrative-state
+          +--ro operational-state?                                  operational-state
+          +--ro lifecycle-state?                                    lifecycle-state
+          +--ro total-potential-capacity
+          |  +--ro total-size
+          |     +--ro value?   decimal64
+          |     +--ro unit?    capacity-unit
+          +--ro available-capacity
+             +--ro total-size
+                +--ro value?   decimal64
+                +--ro unit?    capacity-unit

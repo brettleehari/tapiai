@@ -1,0 +1,26 @@
+tapi-overlay
+Copyright 2026 The tapi-overlay Authors
+
+This product is licensed under the Apache License, Version 2.0 (the "License");
+you may not use this product except in compliance with the License. A copy of
+the License is available in the LICENSE file and at:
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+------------------------------------------------------------------------------
+Third-party material bundled with this distribution
+------------------------------------------------------------------------------
+
+This distribution vendors, unmodified, artifacts from the ONMI (Open Network
+Models and Interfaces) Transport API (TAPI) SDK, used to generate the endpoint
+catalog and to ship schema maps into the produced datasource:
+
+  * OpenAPI specifications  -> tapi_overlay/spec/oas/*.yaml
+  * YANG tree renderings    -> tapi_overlay/spec/tree/*.tree
+
+  Source:  https://github.com/Open-Network-Models-and-Interfaces-ONMI/TAPI
+  Project: LF ONMI Transport API (TAPI) SDK
+  License: Apache License, Version 2.0
+
+See tapi_overlay/spec/PROVENANCE.md for the exact source branch and retrieval
+date. All rights in those artifacts remain with their original authors.

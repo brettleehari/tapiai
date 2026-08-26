@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tapi-overlay"
+version = "0.1.0"
+description = "Harvest a TAPI 2.5 (TR-547 NBI) controller into a coding-agent-ready network datasource."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "Apache-2.0" }
+authors = [
+    { name = "The tapi-overlay Authors", email = "harrynilatpa@gmail.com" },
+]
+keywords = ["tapi", "tr-547", "tr-548", "onmi", "restconf", "optical", "sdn", "yang", "network", "datasource"]
+dependencies = []   # standard library only, by design
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Telecommunications Industry",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: System :: Networking",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.urls]
+Homepage = "https://github.com/Open-Network-Models-and-Interfaces-ONMI/TAPI"
+Repository = "https://github.com/Open-Network-Models-and-Interfaces-ONMI/TAPI"
+Issues = "https://github.com/Open-Network-Models-and-Interfaces-ONMI/TAPI/issues"
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "ruff>=0.4", "build>=1.0"]
+agent = ["aider-chat>=0.50"]   # optional: the Aider coding-agent integration
+
+[project.scripts]
+tapi-overlay = "tapi_overlay.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["tapi_overlay*"]
+
+[tool.setuptools.package-data]
+tapi_overlay = ["spec/oas/*.yaml", "spec/tree/*.tree", "spec/*.md", "py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]   # long lines tolerated in docstrings/spec text
