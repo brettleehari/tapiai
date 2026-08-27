@@ -4,7 +4,7 @@ This file lists the people responsible for reviewing and merging changes.
 
 | Name | GitHub | Email | Area |
 | --- | --- | --- | --- |
-| _TODO: your name_ | _@handle_ | harrynilatpa@gmail.com | Overall |
+| Hari Prasad Sudharsan | [@brettleehari](https://github.com/brettleehari) | hariprasadsudharsan@gmail.com | Overall |
 
 ## Becoming a maintainer
 

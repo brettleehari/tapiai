@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "Apache-2.0" }
 authors = [
-    { name = "The tapi-overlay Authors", email = "harrynilatpa@gmail.com" },
+    { name = "Hari Prasad Sudharsan", email = "hariprasadsudharsan@gmail.com" },
 ]
 keywords = ["tapi", "tr-547", "tr-548", "onmi", "restconf", "optical", "sdn", "yang", "network", "datasource"]
 dependencies = []   # standard library only, by design
@@ -30,9 +30,10 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/Open-Network-Models-and-Interfaces-ONMI/TAPI"
-Repository = "https://github.com/Open-Network-Models-and-Interfaces-ONMI/TAPI"
-Issues = "https://github.com/Open-Network-Models-and-Interfaces-ONMI/TAPI/issues"
+Homepage = "https://github.com/brettleehari/tapiai"
+Repository = "https://github.com/brettleehari/tapiai"
+Issues = "https://github.com/brettleehari/tapiai/issues"
+Changelog = "https://github.com/brettleehari/tapiai/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 dev = ["pytest>=7", "ruff>=0.4", "build>=1.0"]

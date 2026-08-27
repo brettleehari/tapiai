@@ -30,5 +30,5 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `Retry-After` handling, `depth`/`fields` filtering, and robust error handling.
 - In-process mock TR-547 controller and an end-to-end test suite.
 
-[Unreleased]: https://example.com/compare/v0.1.0...HEAD
-[0.1.0]: https://example.com/releases/tag/v0.1.0
+[Unreleased]: https://github.com/brettleehari/tapiai/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/brettleehari/tapiai/releases/tag/v0.1.0
