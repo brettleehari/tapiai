@@ -22,7 +22,8 @@ import io
 import json
 import os
 import re
-from typing import Any, Dict, Iterable, List, Optional
+from collections.abc import Iterable
+from typing import Any
 
 _SAFE = re.compile(r"[^A-Za-z0-9._-]+")
 
@@ -66,7 +67,7 @@ class DataSource:
         return os.path.relpath(path, self.out)
 
     # -- entities --------------------------------------------------------
-    def write_entities(self, kind: str, records: Iterable[Dict[str, Any]]) -> int:
+    def write_entities(self, kind: str, records: Iterable[dict[str, Any]]) -> int:
         kind_dir = os.path.join(self.entities_dir, safe_filename(kind))
         os.makedirs(kind_dir, exist_ok=True)
         # Sort by id so filenames (and any collision suffixes) are independent of
@@ -74,7 +75,7 @@ class DataSource:
         materialized = sorted(
             records, key=lambda r: str(r.get("_id") or r.get("uuid") or "")
         )
-        seen: Dict[str, int] = {}
+        seen: dict[str, int] = {}
         written: set = set()
         for i, rec in enumerate(materialized):
             ident = rec.get("_id") or rec.get("uuid") or f"item-{i}"
@@ -101,7 +102,7 @@ class DataSource:
         return os.path.relpath(path, self.out)
 
     def write_index_csv(
-        self, name: str, rows: List[Dict[str, Any]], columns: List[str]
+        self, name: str, rows: list[dict[str, Any]], columns: list[str]
     ) -> str:
         path = os.path.join(self.index_dir, f"{safe_filename(name)}.csv")
         buf = io.StringIO()
@@ -114,7 +115,7 @@ class DataSource:
         return os.path.relpath(path, self.out)
 
     # -- manifest --------------------------------------------------------
-    def write_manifest(self, manifest: Dict[str, Any]) -> str:
+    def write_manifest(self, manifest: dict[str, Any]) -> str:
         path = os.path.join(self.out, "MANIFEST.json")
         _write_json(path, manifest)
         return os.path.relpath(path, self.out)

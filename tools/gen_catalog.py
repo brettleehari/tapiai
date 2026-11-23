@@ -21,7 +21,6 @@ from __future__ import annotations
 
 import os
 import re
-from typing import Dict, List, Optional, Tuple
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -50,7 +49,7 @@ DESCRIPTIONS = {
 }
 
 
-def _paths(text: str) -> List[str]:
+def _paths(text: str) -> list[str]:
     out = []
     for line in text.splitlines():
         m = PATH_RE.match(line)
@@ -59,13 +58,13 @@ def _paths(text: str) -> List[str]:
     return out
 
 
-def _segments(path: str) -> List[str]:
+def _segments(path: str) -> list[str]:
     return path.split("/")
 
 
-def collect() -> Tuple[Dict[str, dict], Dict[str, dict]]:
-    subtrees: Dict[str, dict] = {}
-    collections: Dict[str, dict] = {}
+def collect() -> tuple[dict[str, dict], dict[str, dict]]:
+    subtrees: dict[str, dict] = {}
+    collections: dict[str, dict] = {}
 
     for fname in sorted(os.listdir(OAS_DIR)):
         if not fname.endswith(".yaml"):
@@ -128,7 +127,7 @@ def _qualify(list_node: str, module: str) -> str:
     return list_node if ":" in list_node else f"{module}:{list_node}"
 
 
-def render(subtrees: Dict[str, dict], collections: Dict[str, dict]) -> str:
+def render(subtrees: dict[str, dict], collections: dict[str, dict]) -> str:
     def sub_line(s: dict) -> str:
         return (
             "    GenEndpoint(key={key!r}, path={path!r}, module={module!r}, "

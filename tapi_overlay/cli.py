@@ -20,7 +20,6 @@ import datetime
 import getpass
 import os
 import sys
-from typing import List, Optional
 
 from .client import TapiClient
 from .crawler import Crawler
@@ -263,7 +262,7 @@ def build_parser() -> argparse.ArgumentParser:
     return p
 
 
-def main(argv: Optional[List[str]] = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
     try:

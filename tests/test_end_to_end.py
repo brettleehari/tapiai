@@ -12,16 +12,15 @@ import os
 import tempfile
 import unittest
 
+from tapi_overlay import normalizer
 from tapi_overlay.client import TapiClient
 from tapi_overlay.crawler import Crawler
 from tapi_overlay.datasource import DataSource
 from tapi_overlay.endpoints import Catalog
 from tapi_overlay.graph import build_graph, shortest_path
 from tapi_overlay.http import HttpClient
-from tapi_overlay import normalizer
-
-from tests.mock_tapi import MockController
 from tests import sample_data as S
+from tests.mock_tapi import MockController
 
 
 class NormalizerTests(unittest.TestCase):
@@ -105,8 +104,8 @@ class HardeningRegressionTests(unittest.TestCase):
     def test_post_is_not_retried(self):
         # Count how many times the transport actually hits the wire for a POST
         # that always 503s: exactly one attempt (no retries for non-idempotent).
-        from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
         import threading
+        from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
         hits = {"n": 0}
 
         class H(BaseHTTPRequestHandler):
@@ -192,7 +191,7 @@ class EndToEndTests(unittest.TestCase):
 
 class CatalogGenerationTests(unittest.TestCase):
     def test_generated_catalog_covers_all_modules(self):
-        from tapi_overlay.endpoints import CONTEXT_SUBTREES, COLLECTIONS
+        from tapi_overlay.endpoints import COLLECTIONS, CONTEXT_SUBTREES
         keys = {e.key for e in CONTEXT_SUBTREES}
         # Modules the review corrected + FM/streaming discovered from OAS.
         self.assertIn("virtual-network-context", keys)

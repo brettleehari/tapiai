@@ -68,7 +68,7 @@ def _index(trees) -> str:
     return "\n".join(lines)
 
 
-def write_schema_bundle(ds: "DataSource") -> int:
+def write_schema_bundle(ds: DataSource) -> int:
     """Write tree maps under <out>/schema/ and a SCHEMA.md index. Returns count."""
     trees = spec.list_tree_files()
     if not trees:

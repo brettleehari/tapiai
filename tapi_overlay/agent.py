@@ -22,7 +22,6 @@ import os
 import shutil
 import subprocess
 from dataclasses import dataclass
-from typing import List, Optional
 
 # Files that make up the navigation layer - always in the agent's context.
 _ALWAYS_READ = ["CONVENTIONS.md", "README.md", "QUERIES.md", "SCHEMA.md"]
@@ -61,7 +60,7 @@ raw/
 """
 
 
-def _aider_conf(model: Optional[str]) -> str:
+def _aider_conf(model: str | None) -> str:
     lines = [
         "# Managed by tapi-overlay. Tuned for read/analysis over a data repo.",
         "auto-commits: false",
@@ -78,15 +77,15 @@ def _aider_conf(model: Optional[str]) -> str:
 @dataclass
 class AgentPrep:
     git_initialized: bool
-    assets_written: List[str]
+    assets_written: list[str]
 
 
-def aider_path() -> Optional[str]:
+def aider_path() -> str | None:
     """Return the aider executable path, or None if not installed."""
     return shutil.which("aider")
 
 
-def _run_git(args: List[str], cwd: str) -> subprocess.CompletedProcess:
+def _run_git(args: list[str], cwd: str) -> subprocess.CompletedProcess:
     return subprocess.run(
         ["git", *args], cwd=cwd, capture_output=True, text=True, check=False
     )
@@ -110,7 +109,7 @@ def ensure_git_repo(path: str) -> bool:
     return True
 
 
-def write_agent_assets(path: str, model: Optional[str]) -> List[str]:
+def write_agent_assets(path: str, model: str | None) -> list[str]:
     """Write CONVENTIONS.md, .aiderignore, and .aider.conf.yml. Returns names."""
     written = []
     for name, content in (
@@ -124,7 +123,7 @@ def write_agent_assets(path: str, model: Optional[str]) -> List[str]:
     return written
 
 
-def prepare(path: str, model: Optional[str]) -> AgentPrep:
+def prepare(path: str, model: str | None) -> AgentPrep:
     if not os.path.isdir(path):
         raise FileNotFoundError(f"datasource not found: {path}")
     assets = write_agent_assets(path, model)
@@ -133,14 +132,14 @@ def prepare(path: str, model: Optional[str]) -> AgentPrep:
 
 
 def build_aider_args(
-    model: Optional[str],
-    api_key: Optional[str],
-    ask: Optional[str],
+    model: str | None,
+    api_key: str | None,
+    ask: str | None,
     yes: bool,
-    extra: Optional[List[str]] = None,
-) -> List[str]:
+    extra: list[str] | None = None,
+) -> list[str]:
     """Construct the aider CLI arguments (executable prepended by the caller)."""
-    args: List[str] = []
+    args: list[str] = []
     if model:
         args += ["--model", model]
     if api_key:
@@ -159,11 +158,11 @@ def build_aider_args(
 
 def run(
     path: str,
-    model: Optional[str] = None,
-    api_key: Optional[str] = None,
-    ask: Optional[str] = None,
+    model: str | None = None,
+    api_key: str | None = None,
+    ask: str | None = None,
     yes: bool = False,
-    extra: Optional[List[str]] = None,
+    extra: list[str] | None = None,
 ) -> int:
     """Prepare the repo and launch Aider against it.
 

@@ -14,7 +14,6 @@ Only the northbound TAPI interface is modelled: RESTCONF + JSON. No NETCONF/XML.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import List, Optional
 
 from .endpoints_generated import GENERATED_COLLECTIONS, GENERATED_SUBTREES
 
@@ -52,8 +51,8 @@ class CollectionSpec:
     member_path: str
 
 
-def _build_subtrees() -> List[Endpoint]:
-    subs: List[Endpoint] = [
+def _build_subtrees() -> list[Endpoint]:
+    subs: list[Endpoint] = [
         # SIPs are a base-context list; fetch explicitly and normalize specially.
         Endpoint(
             key="service-interface-points",
@@ -85,8 +84,8 @@ def _build_subtrees() -> List[Endpoint]:
     return subs
 
 
-def _build_collections() -> List[CollectionSpec]:
-    cols: List[CollectionSpec] = []
+def _build_collections() -> list[CollectionSpec]:
+    cols: list[CollectionSpec] = []
     for c in GENERATED_COLLECTIONS:
         if c.entity_kind in _SPECIAL_KINDS:
             continue
@@ -104,8 +103,8 @@ def _build_collections() -> List[CollectionSpec]:
     return cols
 
 
-CONTEXT_SUBTREES: List[Endpoint] = _build_subtrees()
-COLLECTIONS: List[CollectionSpec] = _build_collections()
+CONTEXT_SUBTREES: list[Endpoint] = _build_subtrees()
+COLLECTIONS: list[CollectionSpec] = _build_collections()
 
 # Per-topology child lists (handled specially: they live below each topology).
 TOPOLOGY_CHILD_LISTS = {
@@ -119,8 +118,8 @@ class Catalog:
     """Bundles the catalog with the controller's RESTCONF rooting."""
 
     restconf_root: str = "/restconf/data"
-    subtrees: List[Endpoint] = field(default_factory=lambda: list(CONTEXT_SUBTREES))
-    collections: List[CollectionSpec] = field(default_factory=lambda: list(COLLECTIONS))
+    subtrees: list[Endpoint] = field(default_factory=lambda: list(CONTEXT_SUBTREES))
+    collections: list[CollectionSpec] = field(default_factory=lambda: list(COLLECTIONS))
 
     def context_path(self) -> str:
         return f"{self.restconf_root.rstrip('/')}/{CONTEXT}"

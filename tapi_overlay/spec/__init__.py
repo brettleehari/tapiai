@@ -14,14 +14,13 @@ https://github.com/Open-Network-Models-and-Interfaces-ONMI/TAPI
 from __future__ import annotations
 
 import os
-from typing import Dict, List
 
 SPEC_DIR = os.path.dirname(os.path.abspath(__file__))
 OAS_DIR = os.path.join(SPEC_DIR, "oas")
 TREE_DIR = os.path.join(SPEC_DIR, "tree")
 
 
-def list_tree_files() -> List[str]:
+def list_tree_files() -> list[str]:
     if not os.path.isdir(TREE_DIR):
         return []
     return sorted(f for f in os.listdir(TREE_DIR) if f.endswith(".tree"))
@@ -32,11 +31,11 @@ def read_tree(filename: str) -> str:
         return fh.read()
 
 
-def all_trees() -> Dict[str, str]:
+def all_trees() -> dict[str, str]:
     return {f: read_tree(f) for f in list_tree_files()}
 
 
-def list_oas_files() -> List[str]:
+def list_oas_files() -> list[str]:
     if not os.path.isdir(OAS_DIR):
         return []
     return sorted(f for f in os.listdir(OAS_DIR) if f.endswith(".yaml"))

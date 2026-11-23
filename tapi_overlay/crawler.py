@@ -11,7 +11,7 @@ not implemented an optional context, recording that fact rather than failing.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from . import docs, normalizer, schema
 from .client import TapiClient
@@ -38,13 +38,13 @@ class HarvestReport:
     finished_at: str = ""
     ok: bool = False
     probe_note: str = ""
-    subtrees: Dict[str, Dict[str, Any]] = field(default_factory=dict)
-    entity_counts: Dict[str, int] = field(default_factory=dict)
-    index_files: List[str] = field(default_factory=list)
+    subtrees: dict[str, dict[str, Any]] = field(default_factory=dict)
+    entity_counts: dict[str, int] = field(default_factory=dict)
+    index_files: list[str] = field(default_factory=list)
     schema_files: int = 0
-    warnings: List[str] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
 
-    def to_manifest(self) -> Dict[str, Any]:
+    def to_manifest(self) -> dict[str, Any]:
         return {
             "tool": "tapi-overlay",
             "tapi_version": "2.5",
@@ -108,7 +108,7 @@ class Crawler:
             report.warnings.append(f"context-shallow: transport error: {exc}")
 
         # 2. Fetch every subtree, write raw, remember bodies for normalization.
-        bodies: Dict[str, Any] = {}
+        bodies: dict[str, Any] = {}
         for ep in self.catalog.subtrees:
             try:
                 res = self.client.fetch_subtree(ep)
@@ -136,9 +136,9 @@ class Crawler:
                 report.warnings.append(f"{ep.key}: fetch failed (HTTP {res.status})")
 
         # 3. Normalize into entities.
-        counts: Dict[str, int] = {}
-        graph_nodes: List[Dict[str, Any]] = []
-        graph_links: List[Dict[str, Any]] = []
+        counts: dict[str, int] = {}
+        graph_nodes: list[dict[str, Any]] = []
+        graph_links: list[dict[str, Any]] = []
 
         # 3a. SIPs (customer-facing edges).
         if "service-interface-points" in bodies:
@@ -206,7 +206,7 @@ class Crawler:
         return report
 
     def _refetch_missing_topology_children(
-        self, topology_body: Any, topo: Dict[str, Any], report: HarvestReport
+        self, topology_body: Any, topo: dict[str, Any], report: HarvestReport
     ) -> None:
         """Re-fetch nodes/links directly for any topology that returned them
         empty (controllers often omit these large lists from the context GET)."""
@@ -217,7 +217,7 @@ class Crawler:
             topo_id = str(topo_rec.get("uuid", ""))
             if not topo_id:
                 continue
-            for kind, (list_node, _) in (
+            for kind, (_list_node, _) in (
                 ("node", ("node", None)), ("link", ("link", None))
             ):
                 if normalizer.get_list(topo_rec, f"tapi-topology:{kind}"):
@@ -249,7 +249,7 @@ class Crawler:
 
     # -- index helpers ---------------------------------------------------
     def _index_collection(
-        self, cspec, records: List[Dict[str, Any]], report: HarvestReport
+        self, cspec, records: list[dict[str, Any]], report: HarvestReport
     ) -> None:
         """Write a summary CSV, choosing columns that suit the entity kind."""
         kind = cspec.entity_kind
@@ -279,7 +279,7 @@ class Crawler:
                     "lifecycle_state", "layer_protocol_name"]
         report.index_files.append(self.ds.write_index_csv(cspec.key, rows, cols))
 
-    def _index_topology(self, topo: Dict[str, Any], report: HarvestReport) -> None:
+    def _index_topology(self, topo: dict[str, Any], report: HarvestReport) -> None:
         node_rows = [
             {"id": n.get("_id", ""), "name": n.get("_name", ""),
              "topology": n.get("_topology", ""),
@@ -294,10 +294,10 @@ class Crawler:
             )
         )
         link_rows = [
-            {"id": l.get("_id", ""), "name": l.get("_name", ""),
-             "topology": l.get("_topology", ""),
-             "operational_state": l.get("operational-state", "")}
-            for l in topo.get("link", [])
+            {"id": link.get("_id", ""), "name": link.get("_name", ""),
+             "topology": link.get("_topology", ""),
+             "operational_state": link.get("operational-state", "")}
+            for link in topo.get("link", [])
         ]
         report.index_files.append(
             self.ds.write_index_csv(

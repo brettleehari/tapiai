@@ -15,7 +15,6 @@ import base64
 import json
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from typing import Optional, Tuple
 
 from . import sample_data as S
 
@@ -48,7 +47,7 @@ class _Handler(BaseHTTPRequestHandler):
             return False
         return user == VALID_USER and pw == VALID_PASS
 
-    def _send(self, status: int, body: Optional[dict]) -> None:
+    def _send(self, status: int, body: dict | None) -> None:
         payload = json.dumps(body).encode("utf-8") if body is not None else b""
         self.send_response(status)
         self.send_header("Content-Type", "application/yang-data+json")
@@ -81,15 +80,15 @@ class MockController:
 
     def __init__(self, host: str = "127.0.0.1"):
         self.host = host
-        self.server: Optional[ThreadingHTTPServer] = None
-        self.thread: Optional[threading.Thread] = None
+        self.server: ThreadingHTTPServer | None = None
+        self.thread: threading.Thread | None = None
 
     @property
     def base_url(self) -> str:
         assert self.server is not None
         return f"http://{self.host}:{self.server.server_address[1]}"
 
-    def __enter__(self) -> "MockController":
+    def __enter__(self) -> MockController:
         self.server = ThreadingHTTPServer((self.host, 0), _Handler)
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
         self.thread.start()

@@ -20,7 +20,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass, field
-from typing import Any, Dict, Optional, Tuple
+from typing import Any
 
 # Methods safe to retry automatically. POST is deliberately excluded: retrying a
 # provisioning POST whose response was lost can double-create a service.
@@ -41,7 +41,7 @@ class HttpError(Exception):
 @dataclass
 class HttpResponse:
     status: int
-    headers: Dict[str, str]
+    headers: dict[str, str]
     body: bytes
 
     def json(self) -> Any:
@@ -75,28 +75,28 @@ class HttpClient:
     """
 
     base_url: str
-    username: Optional[str] = None
-    password: Optional[str] = None
-    token: Optional[str] = None
+    username: str | None = None
+    password: str | None = None
+    token: str | None = None
     verify_tls: bool = True
     timeout: float = 60.0
     max_retries: int = 3
     backoff: float = 1.5
-    extra_headers: Dict[str, str] = field(default_factory=dict)
+    extra_headers: dict[str, str] = field(default_factory=dict)
 
     # RESTCONF media type per RFC 8040. TR-547 controllers accept JSON.
     accept: str = "application/yang-data+json, application/json"
 
-    def _auth_header(self) -> Dict[str, str]:
+    def _auth_header(self) -> dict[str, str]:
         if self.token:
             return {"Authorization": f"Bearer {self.token}"}
         if self.username is not None:
-            raw = f"{self.username}:{self.password or ''}".encode("utf-8")
+            raw = f"{self.username}:{self.password or ''}".encode()
             enc = base64.b64encode(raw).decode("ascii")
             return {"Authorization": f"Basic {enc}"}
         return {}
 
-    def _ssl_context(self) -> Optional[ssl.SSLContext]:
+    def _ssl_context(self) -> ssl.SSLContext | None:
         if self.base_url.lower().startswith("https") and not self.verify_tls:
             ctx = ssl.create_default_context()
             ctx.check_hostname = False
@@ -104,7 +104,7 @@ class HttpClient:
             return ctx
         return None
 
-    def build_url(self, path: str, query: Optional[Dict[str, Any]] = None) -> str:
+    def build_url(self, path: str, query: dict[str, Any] | None = None) -> str:
         if path.startswith("http://") or path.startswith("https://"):
             url = path
         else:
@@ -125,7 +125,7 @@ class HttpClient:
         self,
         method: str,
         path: str,
-        query: Optional[Dict[str, Any]] = None,
+        query: dict[str, Any] | None = None,
         body: Any = None,
     ) -> HttpResponse:
         url = self.build_url(path, query)
@@ -133,13 +133,13 @@ class HttpClient:
         headers.update(self._auth_header())
         headers.update(self.extra_headers)
 
-        data: Optional[bytes] = None
+        data: bytes | None = None
         if body is not None:
             data = json.dumps(body).encode("utf-8")
             headers["Content-Type"] = "application/yang-data+json"
 
         ctx = self._ssl_context()
-        last_exc: Optional[Exception] = None
+        last_exc: Exception | None = None
         # Only replay a request when the method is safe to repeat. A retried
         # POST could double-provision, so provisioning callers get one attempt.
         retryable = method.upper() in _IDEMPOTENT_METHODS
@@ -201,8 +201,8 @@ class HttpClient:
     def stream_lines(
         self,
         path: str,
-        query: Optional[Dict[str, Any]] = None,
-        max_seconds: Optional[float] = None,
+        query: dict[str, Any] | None = None,
+        max_seconds: float | None = None,
     ):
         """Open a long-lived GET and yield decoded text lines as they arrive.
 
@@ -230,12 +230,12 @@ class HttpClient:
                 line = raw.decode("utf-8", errors="replace").rstrip("\r\n")
                 yield line
 
-    def get(self, path: str, query: Optional[Dict[str, Any]] = None) -> HttpResponse:
+    def get(self, path: str, query: dict[str, Any] | None = None) -> HttpResponse:
         return self.request("GET", path, query=query)
 
     def get_json(
-        self, path: str, query: Optional[Dict[str, Any]] = None
-    ) -> Tuple[int, Any]:
+        self, path: str, query: dict[str, Any] | None = None
+    ) -> tuple[int, Any]:
         """GET and parse JSON. Returns ``(status, parsed_or_None)``.
 
         Never raises on 4xx/5xx - the caller decides how to treat a missing

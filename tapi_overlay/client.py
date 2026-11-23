@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import urllib.parse
 from dataclasses import dataclass
-from typing import Any, Dict, Optional, Tuple
+from typing import Any
 
 from .endpoints import Catalog, CollectionSpec, Endpoint
 from .http import HttpClient
@@ -51,13 +51,13 @@ class FetchResult:
 class TapiClient:
     """High-level TAPI NBI reader."""
 
-    def __init__(self, http: HttpClient, catalog: Optional[Catalog] = None):
+    def __init__(self, http: HttpClient, catalog: Catalog | None = None):
         self.http = http
         self.catalog = catalog or Catalog()
 
     def _get_with_depth_fallback(
-        self, path: str, depth: Optional[int]
-    ) -> Tuple[int, Any, str]:
+        self, path: str, depth: int | None
+    ) -> tuple[int, Any, str]:
         """GET ``path`` with an optional ``depth``; if the controller rejects
         depth with 400, retry once without it. Returns (status, data, note)."""
         if depth is not None:
@@ -70,7 +70,7 @@ class TapiClient:
         return status, data, note
 
     # -- probing ---------------------------------------------------------
-    def probe(self) -> Tuple[bool, str]:
+    def probe(self) -> tuple[bool, str]:
         """Confirm we can reach the controller and authenticate.
 
         Fetches the context with depth=1 (falling back to a plain GET if the
@@ -106,13 +106,13 @@ class TapiClient:
     def fetch_subtree(
         self,
         ep: Endpoint,
-        fields: Optional[str] = None,
-        depth: Optional[int] = None,
+        fields: str | None = None,
+        depth: int | None = None,
     ) -> FetchResult:
         # TR-547 supports RFC 8040 'fields' (select a subset) and 'depth' (bound
         # nesting) to keep responses tractable on large contexts. Both optional.
         path = self.catalog.subtree_path(ep)
-        query: Dict[str, str] = {}
+        query: dict[str, str] = {}
         if fields:
             query["fields"] = fields
         if depth is not None:

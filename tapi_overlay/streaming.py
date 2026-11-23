@@ -21,8 +21,9 @@ from __future__ import annotations
 
 import json
 import os
+from collections.abc import Iterable
 from dataclasses import dataclass, field
-from typing import Any, Dict, Iterable, List, Optional, Tuple
+from typing import Any
 
 from . import normalizer
 from .client import TapiClient
@@ -48,7 +49,7 @@ _DELETION_TYPES = {"OBJECT_DELETION", "NOTIFICATION_TYPE_OBJECT_DELETION", "DELE
 
 @dataclass
 class StreamRecord:
-    raw: Dict[str, Any]
+    raw: dict[str, Any]
 
     @property
     def notification_type(self) -> str:
@@ -79,10 +80,10 @@ class StreamReport:
     applied: int = 0
     deleted: int = 0
     skipped: int = 0
-    warnings: List[str] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
 
 
-def discover_streams(client: TapiClient) -> List[Dict[str, Any]]:
+def discover_streams(client: TapiClient) -> list[dict[str, Any]]:
     """Return available-stream descriptors from the stream-context, if any."""
     path = f"{client.catalog.context_path()}/tapi-streaming:stream-context"
     status, data = client.http.get_json(path)
@@ -100,7 +101,7 @@ def parse_records(lines: Iterable[str]) -> Iterable[StreamRecord]:
     SSE frames carry payload on ``data:`` lines (possibly multi-line, ended by a
     blank line); NDJSON has one JSON object per line. Both are handled.
     """
-    buffer: List[str] = []
+    buffer: list[str] = []
     for line in lines:
         if line.startswith(":"):  # SSE comment / keep-alive
             continue
@@ -144,7 +145,7 @@ def _emit(text: str) -> Iterable[StreamRecord]:
                 yield StreamRecord(item)
 
 
-def _member_spec(kind: str, client: TapiClient) -> Optional[CollectionSpec]:
+def _member_spec(kind: str, client: TapiClient) -> CollectionSpec | None:
     for spec in client.catalog.collections:
         if spec.entity_kind == kind:
             return spec
@@ -182,7 +183,7 @@ def apply_record(
     report.applied += 1
 
 
-def _write_one(ds: DataSource, kind: str, rec: Dict[str, Any]) -> None:
+def _write_one(ds: DataSource, kind: str, rec: dict[str, Any]) -> None:
     # Single-file write that does NOT prune the directory (unlike write_entities,
     # which is a full-snapshot operation). Streaming touches one entity at a time.
     import json as _json
@@ -198,7 +199,7 @@ def _write_one(ds: DataSource, kind: str, rec: Dict[str, Any]) -> None:
 
 def _refetch_object(
     kind: str, oid: str, client: TapiClient
-) -> Optional[Dict[str, Any]]:
+) -> dict[str, Any] | None:
     spec = _member_spec(kind, client)
     if spec is not None:
         res = client.fetch_member(spec, oid)
@@ -215,9 +216,9 @@ def _refetch_object(
 def ingest(
     client: TapiClient,
     ds: DataSource,
-    stream_name: Optional[str] = None,
-    max_records: Optional[int] = 100,
-    max_seconds: Optional[float] = None,
+    stream_name: str | None = None,
+    max_records: int | None = 100,
+    max_seconds: float | None = None,
 ) -> StreamReport:
     """Consume a stream and apply records until a bound is hit.
 
@@ -242,10 +243,10 @@ def ingest(
 
 def _resolve_stream_path(
     client: TapiClient,
-    streams: List[Dict[str, Any]],
-    stream_name: Optional[str],
+    streams: list[dict[str, Any]],
+    stream_name: str | None,
     report: StreamReport,
-) -> Optional[str]:
+) -> str | None:
     if not streams:
         report.warnings.append("no available streams advertised by the controller")
         return None

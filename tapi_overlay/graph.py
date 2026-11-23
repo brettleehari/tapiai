@@ -13,12 +13,12 @@ each referenced NEP back to its owning node to get node-to-node adjacency.
 from __future__ import annotations
 
 from collections import defaultdict, deque
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 from .normalizer import get_list, strip_prefix
 
 
-def _nep_refs(link: Dict[str, Any]) -> List[Tuple[str, str]]:
+def _nep_refs(link: dict[str, Any]) -> list[tuple[str, str]]:
     """Return (node_uuid, nep_uuid) pairs a link connects.
 
     Leaf keys are resolved prefix-tolerantly: real controllers may emit
@@ -37,8 +37,8 @@ def _nep_refs(link: Dict[str, Any]) -> List[Tuple[str, str]]:
 
 
 def build_graph(
-    nodes: List[Dict[str, Any]], links: List[Dict[str, Any]]
-) -> Dict[str, Any]:
+    nodes: list[dict[str, Any]], links: list[dict[str, Any]]
+) -> dict[str, Any]:
     """Construct a serializable graph document.
 
     Structure::
@@ -49,7 +49,7 @@ def build_graph(
           "adjacency": {node_id: [neighbor_id, ...]},
         }
     """
-    node_index: Dict[str, Dict[str, Any]] = {}
+    node_index: dict[str, dict[str, Any]] = {}
     for n in nodes:
         nid = n.get("_id") or str(n.get("uuid", ""))
         node_index[nid] = {
@@ -59,11 +59,11 @@ def build_graph(
             "degree": 0,
         }
 
-    edges: List[Dict[str, Any]] = []
-    adjacency: Dict[str, set] = defaultdict(set)
+    edges: list[dict[str, Any]] = []
+    adjacency: dict[str, set] = defaultdict(set)
     # Degree counts link incidences (so parallel links between the same pair
     # each add to degree), separate from the neighbor set used for BFS.
-    incidence: Dict[str, int] = defaultdict(int)
+    incidence: dict[str, int] = defaultdict(int)
 
     for link in links:
         refs = _nep_refs(link)
@@ -112,7 +112,7 @@ def build_graph(
     }
 
 
-def shortest_path(graph: Dict[str, Any], src: str, dst: str) -> Optional[List[str]]:
+def shortest_path(graph: dict[str, Any], src: str, dst: str) -> list[str] | None:
     """BFS shortest path over the adjacency map; ``None`` if unreachable."""
     adj = graph.get("adjacency", {})
     known = src in adj or any(n["id"] == src for n in graph.get("nodes", []))

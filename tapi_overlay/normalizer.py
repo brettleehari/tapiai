@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from .endpoints import COLLECTIONS, TOPOLOGY_CHILD_LISTS, CollectionSpec
 
@@ -22,7 +22,7 @@ def strip_prefix(key: str) -> str:
     return key.split(":", 1)[1] if ":" in key else key
 
 
-def get_list(container: Any, list_name: str) -> List[Dict[str, Any]]:
+def get_list(container: Any, list_name: str) -> list[dict[str, Any]]:
     """Return the list stored under ``list_name`` in ``container``.
 
     Matches both the module-prefixed key (``tapi-topology:node``) and the bare
@@ -51,7 +51,7 @@ def unwrap(data: Any, resource_key: str) -> Any:
     return data
 
 
-def entity_name(entity: Dict[str, Any]) -> str:
+def entity_name(entity: dict[str, Any]) -> str:
     """Best-effort human name from the TAPI ``name`` list.
 
     TAPI names are ``[{value-name, value}]`` pairs; prefer a NAME-ish entry.
@@ -78,16 +78,16 @@ def entity_name(entity: Dict[str, Any]) -> str:
 
 def normalize_collection(
     parent_body: Any, spec: CollectionSpec
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     """Extract members of one collection from a subtree body."""
     # Tolerate both a bare subtree body and a whole-context envelope.
     body = unwrap(unwrap(parent_body, "context"), spec.parent_key_resource())
     return get_list(body, spec.list_name)
 
 
-def _record(entity: Dict[str, Any], id_field: str) -> Dict[str, Any]:
+def _record(entity: dict[str, Any], id_field: str) -> dict[str, Any]:
     ident = entity.get(id_field) or entity.get("uuid") or ""
-    rec: Dict[str, Any] = {
+    rec: dict[str, Any] = {
         "_id": str(ident),
         "_name": entity_name(entity),
         **entity,
@@ -103,12 +103,12 @@ def _record(entity: Dict[str, Any], id_field: str) -> Dict[str, Any]:
     return rec
 
 
-def to_record(entity: Dict[str, Any], id_field: str = "uuid") -> Dict[str, Any]:
+def to_record(entity: dict[str, Any], id_field: str = "uuid") -> dict[str, Any]:
     """Public wrapper around the per-entity record builder."""
     return _record(entity, id_field)
 
 
-def node_edge_points(node: Dict[str, Any], topology_id: str) -> List[Dict[str, Any]]:
+def node_edge_points(node: dict[str, Any], topology_id: str) -> list[dict[str, Any]]:
     """Build NEP records for one node, tagged with their owning node/topology."""
     out = []
     for nep in get_list(node, "tapi-topology:owned-node-edge-point"):
@@ -119,7 +119,7 @@ def node_edge_points(node: Dict[str, Any], topology_id: str) -> List[Dict[str, A
     return out
 
 
-def normalize_topologies(topology_context_body: Any) -> Dict[str, Any]:
+def normalize_topologies(topology_context_body: Any) -> dict[str, Any]:
     """Split the topology-context into topologies, nodes, links, NEPs.
 
     Returns a dict keyed by entity_kind -> list of records. Nodes and links are
@@ -128,7 +128,7 @@ def normalize_topologies(topology_context_body: Any) -> Dict[str, Any]:
     body = unwrap(unwrap(topology_context_body, "context"), "topology-context")
     topologies = get_list(body, "tapi-topology:topology")
 
-    out: Dict[str, List[Dict[str, Any]]] = {
+    out: dict[str, list[dict[str, Any]]] = {
         "topology": [],
         "node": [],
         "link": [],
@@ -153,7 +153,7 @@ def normalize_topologies(topology_context_body: Any) -> Dict[str, Any]:
     return out
 
 
-def normalize_sips(sip_body: Any) -> List[Dict[str, Any]]:
+def normalize_sips(sip_body: Any) -> list[dict[str, Any]]:
     # SIPs may arrive as a bare list, wrapped under the resource key, or nested
     # inside a whole-context envelope.
     ctx = unwrap(sip_body, "context")
@@ -165,7 +165,7 @@ def normalize_sips(sip_body: Any) -> List[Dict[str, Any]]:
     return [_record(s, "uuid") for s in items]
 
 
-def normalize_generic(parent_body: Any, spec: CollectionSpec) -> List[Dict[str, Any]]:
+def normalize_generic(parent_body: Any, spec: CollectionSpec) -> list[dict[str, Any]]:
     members = normalize_collection(parent_body, spec)
     return [_record(m, spec.id_field) for m in members]
 
@@ -183,5 +183,5 @@ def _parent_key_resource(self: CollectionSpec) -> str:
 CollectionSpec.parent_key_resource = _parent_key_resource  # type: ignore[attr-defined]
 
 
-def collection_specs_by_parent(parent_key: str) -> List[CollectionSpec]:
+def collection_specs_by_parent(parent_key: str) -> list[CollectionSpec]:
     return [c for c in COLLECTIONS if c.parent_key == parent_key]
