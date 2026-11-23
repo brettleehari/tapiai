@@ -5,7 +5,6 @@ Do not edit by hand; re-run the generator to refresh. Covers all TAPI modules.
 """
 
 from dataclasses import dataclass
-from typing import Optional
 
 
 @dataclass(frozen=True)

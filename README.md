@@ -2,7 +2,7 @@
 
 [![CI](https://img.shields.io/badge/CI-GitHub%20Actions-blue)](.github/workflows/ci.yml)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/python-3.9%2B-blue)](pyproject.toml)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue)](pyproject.toml)
 [![Dependencies](https://img.shields.io/badge/runtime%20deps-none-brightgreen)](pyproject.toml)
 
 Point it at a **TAPI 2.5 (TR-547 NBI)** controller with an endpoint + credentials.
@@ -25,7 +25,7 @@ NEs: ROADMs / transponders
 
 ## Install
 
-Standard library only — no dependencies. Python 3.9+.
+Standard library only — no dependencies. Python 3.10+.
 
 ```bash
 cd tapiai
